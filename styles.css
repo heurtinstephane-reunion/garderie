@@ -1,0 +1,378 @@
+/* ============================================================
+   1. BASES ET STRUCTURE GÉNÉRALE DE L'APPLICATION
+   ============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+body { background: #f4f7fc; display: flex; justify-content: center; padding: 1.5rem; min-height: 100vh; }
+.app-container { max-width: 1200px; width: 100%; }
+
+/* ============ EN-TÊTE ============ */
+.app-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap; }
+.logo { display: flex; align-items: center; gap: .75rem; }
+.logo i { font-size: 2rem; color: #2c6e9c; background: white; padding: .6rem; border-radius: 14px; box-shadow: 0 8px 20px rgba(0,0,0,.03); }
+.logo h1 { font-size: 1.35rem; font-weight: 600; color: #1a2e3f; letter-spacing: -.02em; }
+
+/* ============ ONGLETS PRINCIPAUX ============ */
+.tabs { display: flex; gap: .5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.tab-btn { background: white; border: none; padding: .6rem 1.2rem; border-radius: 40px; font-weight: 500; font-size: .9rem; color: #5f7484; cursor: pointer; display: flex; align-items: center; gap: .4rem; box-shadow: 0 2px 8px rgba(0,0,0,.02); }
+.tab-btn i { font-size: .9rem; opacity: .7; }
+.tab-btn.active { background: #2c6e9c; color: white; box-shadow: 0 8px 16px rgba(44,110,156,.25); }
+.tab-btn.active i { opacity: 1; }
+
+/* ============ PANNEAUX ET CARTES ============ */
+.panneau { display: none; }
+.panneau.active { display: block; animation: fadeIn .25s ease; }
+@keyframes fadeIn { from { opacity: .5; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+.card { background: white; border-radius: 24px; padding: 1.75rem; box-shadow: 0 10px 30px rgba(0,0,0,.03); margin-bottom: 1.5rem; }
+
+/* ============================================================
+   2. COMPOSANTS D'INTERFACE (BOUTONS, CHAMPS, TABLEAUX)
+   ============================================================ */
+/* Boutons */
+.btn { border: none; border-radius: 40px; padding: .65rem 1.2rem; font-weight: 500; font-size: .88rem; cursor: pointer; display: inline-flex; align-items: center; gap: .5rem; }
+.btn-primary { background: #2c6e9c; color: white; }
+.btn-primary:hover { background: #235b82; }
+.btn-light { background: #e3eff9; color: #1b4a6b; }
+.btn-light:hover { background: #d0e3f2; }
+.btn-danger { background: #fee9e9; color: #a52c2c; }
+.btn-danger:hover { background: #fdd4d4; }
+.btn-ghost { background: transparent; color: #5f7484; border: 1px solid #dbe2e8; }
+.btn-ghost:hover { background: #f4f7fc; }
+.btn-icon { background: transparent; border: none; cursor: pointer; padding: .3rem .5rem; border-radius: 30px; color: #8aa0b0; font-size: .95rem; }
+.btn-icon:hover { background: #e3eff9; color: #2c6e9c; }
+.btn-icon.danger:hover { background: #fee9e9; color: #d94a4a; }
+
+/* Champs de saisie */
+.input-field { border: 1px solid #dbe2e8; border-radius: 12px; padding: .55rem .7rem; font-size: .92rem; width: 100%; background: #fafdff; }
+.input-field:focus { border-color: #2c6e9c; box-shadow: 0 0 0 3px rgba(44,110,156,.08); outline: none; background: white; }
+.input-field.invalid-date { border-color: #d94a4a; background: #fef6f6; }
+
+/* Sous-onglets (Inscrits / Non inscrits, Tarifs...) */
+.sous-tabs { display: flex; gap: .4rem; margin-bottom: 1.2rem; background: #f4f7fc; padding: .35rem; border-radius: 40px; width: fit-content; }
+.sous-tab { background: transparent; border: none; padding: .5rem 1.1rem; border-radius: 30px; font-size: .88rem; font-weight: 500; color: #5f7484; cursor: pointer; display: flex; align-items: center; gap: .4rem; }
+.sous-tab.active { background: white; color: #1b4a6b; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+.sous-tab .count { background: #e3eff9; color: #1b4a6b; font-size: .7rem; padding: .1rem .5rem; border-radius: 20px; font-weight: 600; }
+.sous-tab.active .count { background: #2c6e9c; color: white; }
+
+.soustarif-panneau { display: none; }
+.soustarif-panneau.active { display: block; animation: fadeIn .25s ease; }
+.sous-tabs-tarif { display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.8rem; background: #eaf2fa; padding: .5rem; border-radius: 40px; width: fit-content; margin-left: auto; margin-right: auto; }
+.sous-tab-tarif { background: transparent; border: 1px solid transparent; padding: .7rem 1.5rem; border-radius: 30px; font-size: .95rem; font-weight: 500; color: #4b6477; cursor: pointer; display: flex; align-items: center; gap: .5rem; transition: all .2s; }
+.sous-tab-tarif:hover { background: white; color: #1b4a6b; }
+.sous-tab-tarif.active { background: #2c6e9c; color: white; font-weight: 600; box-shadow: 0 4px 12px rgba(44,110,156,.25); }
+.sous-tab-tarif.active:hover { background: #2c6e9c; color: white; }
+
+/* ============================================================
+   3. ONGLET POINTAGE (Mois, Enfants, Facturation)
+   ============================================================ */
+.mois-grid { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 1.5rem; }
+.mois-btn { background: #f4f7fc; border: none; border-radius: 40px; padding: .5rem 1.1rem; font-weight: 500; font-size: .9rem; color: #3f5a6b; cursor: pointer; display: flex; align-items: center; gap: .4rem; border: 1px solid transparent; }
+.mois-btn.traite {
+  background: #e3f4ea; /* Un joli vert clair */
+  color: #1f7a4a;      /* Texte vert foncé */
+  border-color: #ccebd7;
+}
+.mois-btn.traite.active {
+  background: #2c6e9c; /* Si on le sélectionne, il redevient bleu */
+  color: white;
+}
+.mois-btn.traite i {
+  font-size: 0.8rem;
+  margin-left: 5px;
+}
+.mois-btn.active { background: #e3eff9; border-color: #2c6e9c; color: #1b4a6b; font-weight: 600; }
+.mois-btn:hover { background: #e9f0f7; }
+
+.enfant-group { border: 1px solid #e2e9f0; border-radius: 18px; margin-bottom: 1rem; overflow: hidden; background: #fbfdff; }
+.enfant-group-header { display: flex; align-items: center; justify-content: space-between; padding: .9rem 1.2rem; background: #f4f9fe; gap: 1rem; flex-wrap: wrap; }
+.enfant-group-header .enfant-info { display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; }
+.enfant-group-header .enfant-name { font-weight: 600; color: #1a2e3f; font-size: 1.02rem; }
+.enfant-group-header .enfant-total { font-weight: 700; color: #1b4a6b; background: white; padding: .35rem .9rem; border-radius: 20px; font-size: .9rem; }
+.enfant-lignes { padding: .4rem .8rem .9rem 1rem; }
+.ligne-entete { display: grid; grid-template-columns: 20px 1.2fr 1.2fr 1.2fr 1fr .5fr; gap: .5rem; align-items: center; padding: .4rem 0 .5rem 0; font-size: .72rem; color: #8aa0b0; font-weight: 500; text-transform: uppercase; letter-spacing: .03em; border-bottom: 1px solid #edf2f7; margin-bottom: .4rem; }
+.ligne-entete > span { padding-left: .5rem; }
+.ligne-date { 
+  display: grid; 
+  grid-template-columns: 20px 1.2fr 1.2fr 1.2fr 1fr .5fr; 
+  gap: .5rem; 
+  align-items: center; 
+  padding: .5rem 0; 
+  border-bottom: 1px dashed #e8eef4; 
+  border-radius: 8px; 
+  transition: background .15s; 
+  min-height: 42px; /* Laisse de la place pour les champs */
+}
+.ligne-date:last-child { border-bottom: none; }
+.ligne-date .input-field { 
+  padding: 0 4px !important; 
+  font-size: .85rem; 
+  height: 32px !important; 
+  line-height: 30px !important; 
+  box-sizing: border-box; 
+  text-align: center;
+}
+
+.ligne-date select.input-field {
+  text-align-last: center;
+}
+
+.ligne-date input[type="date"].input-field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.drag-handle { cursor: grab; color: #c0cfdd; font-size: .85rem; text-align: center; user-select: none; }
+.drag-handle:active { cursor: grabbing; }
+.drag-handle:hover { color: #2c6e9c; }
+.ligne-date.dragging { opacity: .4; background: #eef7ff; }
+.ligne-date.drag-over-top { box-shadow: inset 0 3px 0 0 #2c6e9c; }
+.ligne-date.drag-over-bottom { box-shadow: inset 0 -3px 0 0 #2c6e9c; }
+.quart-arrows { display: flex; align-items: center; gap: .25rem; }
+.quart-arrows .nb { min-width: auto; text-align: center; font-weight: 600; color: #1b4a6b; font-size: .8rem; white-space: nowrap; }
+.arrow-btn { background: #f4f7fc; border: 1px solid #dbe2e8; border-radius: 8px; width: 1.5rem; height: 1.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #4b6477; font-size: .65rem; flex-shrink: 0; }
+.arrow-btn:hover { background: #e3eff9; color: #2c6e9c; }
+.arrow-btn:disabled { opacity: .3; cursor: not-allowed; }
+.arrow-btn:disabled:hover { background: #f4f7fc; color: #4b6477; }
+.quart-none { font-size: .78rem; color: #b8c7d4; font-style: italic; }
+.tarif-affiche { font-weight: 600; color: #1b4a6b; font-size: .92rem; text-align: right; padding-right: .3rem; }
+
+
+
+/* ============================================================
+   4. ONGLET ENFANTS (Filtres, Tableau)
+   ============================================================ */
+.barre-filtre { display: flex; gap: .8rem; align-items: center; margin-bottom: .9rem; flex-wrap: wrap; }
+.barre-filtre .search-wrapper { flex: 1; min-width: 200px; }
+.compteur-selection { font-size: .82rem; color: #8aa0b0; white-space: nowrap; padding: .4rem .8rem; background: #f4f7fc; border-radius: 12px; transition: all .2s; }
+.compteur-selection.actif { background: #e3eff9; color: #1b4a6b; font-weight: 600; }
+.bulk-bar { display: none; background: #e3eff9; border: 1px solid #c5dcef; border-radius: 16px; padding: .7rem 1rem; margin-bottom: 1rem; align-items: center; justify-content: space-between; gap: .8rem; flex-wrap: wrap; }
+.bulk-bar.visible { display: flex; }
+.bulk-bar .bulk-info { font-size: .88rem; color: #1b4a6b; font-weight: 500; display: flex; align-items: center; gap: .5rem; }
+.bulk-bar .bulk-actions { display: flex; gap: .5rem; flex-wrap: wrap; }
+
+.creneau-btns { display: flex; gap: .4rem; margin-bottom: .9rem; flex-wrap: wrap; }
+.creneau-btn { background: #f4f7fc; border: 1px solid transparent; border-radius: 20px; padding: .4rem .9rem; font-size: .82rem; font-weight: 500; color: #5f7484; cursor: pointer; display: inline-flex; align-items: center; gap: .3rem; }
+.creneau-btn .count {  background: #f4f7fc;  color: #1b4a6b;  font-size: 0.7rem;  padding: 0.1rem 0.4rem;  border-radius: 20px; font-weight: 600; margin-left: 0.3rem; }
+.creneau-btn.active .count {
+  background: #2c6e9c;
+  color: white;
+}
+.creneau-btn.active { background: #e3eff9; border-color: #2c6e9c; color: #1b4a6b; font-weight: 600; }
+.creneau-btn:hover { background: #e9f0f7; }
+.stats-bandeau { display: flex; gap: 1.4rem; flex-wrap: wrap; padding: .65rem 1rem; background: #f4f9fe; border-radius: 12px; margin-bottom: 1rem; font-size: .85rem; color: #2d4a60; align-items: center; }
+.stats-bandeau .stat-item { display: flex; align-items: center; gap: .4rem; }
+.stats-bandeau .stat-item strong { color: #1b4a6b; }
+.stats-bandeau .stat-sep { color: #cfdae4; }
+
+.enfant-table { width: 100%; border-collapse: collapse; }
+.enfant-table th { 
+  text-align: center; /* On centre le texte */
+  padding: .7rem .5rem; 
+  color: #2c6e9c; /* Un bleu plus joli pour les titres */
+  font-weight: 600; 
+  font-size: .8rem; 
+  text-transform: uppercase; 
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #e2e9f0; 
+  vertical-align: middle;
+}
+.enfant-table th.check-col, .enfant-table td.check-col { width: 36px; text-align: center; }
+.enfant-table td { padding: .55rem .5rem; border-bottom: 1px solid #edf2f7; }
+.enfant-table tr:last-child td { border-bottom: none; }
+.enfant-table tbody tr:hover { background: #fafdff; }
+.enfant-table tbody tr.selected { background: #eaf4fc; }
+.check-select { width: 1.1rem; height: 1.1rem; accent-color: #2c6e9c; cursor: pointer; }
+
+
+
+/* ============================================================
+   5. ONGLET TARIFICATION (Cartes, Calculs)
+   ============================================================ */
+.tarif-form-court { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 280px)); gap: 1.2rem; margin-bottom: 1.2rem; }
+.tarif-form-court .param-input { max-width: 280px; }
+.tarif-form-actions { display: flex; justify-content: center; margin: 1rem 0 1.5rem 0; }
+.param-grid { display: flex; flex-direction: column; gap: 1.5rem; max-width: 520px; }
+.param-item { display: flex; flex-direction: column; gap: .5rem; }
+.param-item label { font-weight: 500; color: #2d4a60; font-size: .95rem; display: flex; align-items: center; gap: .5rem; }
+.param-item label i { color: #2c6e9c; width: 1.2rem; }
+.param-input { border: 1px solid #dbe2e8; border-radius: 14px; padding: .9rem 1.2rem; font-size: 1rem; background: #fafdff; }
+.param-input:focus { border-color: #2c6e9c; box-shadow: 0 0 0 3px rgba(44,110,156,.08); outline: none; background: white; }
+.info-note { font-size: .85rem; color: #6f8698; margin-top: .3rem; }
+.param-section { border-top: 1px solid #edf2f7; padding-top: 1.5rem; margin-top: 1.5rem; }
+.param-section h3 { font-size: 1rem; font-weight: 600; color: #1a2e3f; margin-bottom: .4rem; display: flex; align-items: center; gap: .5rem; }
+.param-section h3 i { color: #2c6e9c; }
+.tarif-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; margin-bottom: 1.2rem; }
+.tarif-card { background: #f4f9fe; border-radius: 16px; padding: 1rem 1.2rem; border: 1px solid #e2e9f0; }
+.tarif-card .tarif-label { font-size: .78rem; color: #5f7484; text-transform: uppercase; letter-spacing: .04em; font-weight: 500; margin-bottom: .4rem; display: flex; align-items: center; gap: .4rem; }
+.tarif-card .tarif-value { font-size: 1.5rem; font-weight: 700; color: #1b4a6b; }
+.tarif-card .tarif-sub { font-size: .78rem; color: #8aa0b0; margin-top: .2rem; }
+.tarif-card.accent { background: #e3eff9; border-color: #c5dcef; }
+.tarif-card.accent .tarif-value { color: #2c6e9c; }
+.tarif-section-title { font-size: .95rem; font-weight: 600; color: #1a2e3f; margin: 1.5rem 0 .8rem; display: flex; align-items: center; gap: .5rem; }
+.tarif-section-title i { color: #2c6e9c; }
+.comparaison-box { background: #fef6e0; border-radius: 14px; padding: 1.2rem 1.5rem; border: 1px solid #fdeec5; margin-top: 1.2rem; }
+.comparaison-box h4 { font-size: .92rem; color: #7a5e1c; margin-bottom: .8rem; display: flex; align-items: center; gap: .4rem; }
+.comparaison-box .comparaison-line { font-size: .88rem; color: #2d4a60; padding: .3rem 0; display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.comparaison-box .comparaison-line strong { color: #7a5e1c; }
+
+/* ============================================================
+   6. MODALES ET BADGES
+   ============================================================ */
+.modal-overlay { position: fixed; inset: 0; background: rgba(20,40,60,.45); display: none; align-items: center; justify-content: center; padding: 1rem; z-index: 1000; }
+.modal-overlay.visible { display: flex; }
+.modal { background: white; border-radius: 20px; padding: 1.8rem; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; }
+.modal h3 { font-size: 1.15rem; color: #1a2e3f; margin-bottom: .4rem; }
+.modal .modal-sub { font-size: .85rem; color: #6f8698; margin-bottom: 1.2rem; }
+.modal-actions { display: flex; justify-content: flex-end; gap: .6rem; margin-top: 1.2rem; flex-wrap: wrap; }
+.preview-table { width: 100%; border-collapse: collapse; font-size: .82rem; margin-top: .6rem; }
+.preview-table th { background: #f4f9fe; padding: .5rem .4rem; text-align: left; font-size: .72rem; text-transform: uppercase; color: #4b6477; border-bottom: 1px solid #dbe2e8; }
+.preview-table td { padding: .45rem .4rem; border-bottom: 1px solid #edf2f7; }
+.preview-table tr.invalid { background: #fef6f6; }
+.preview-table tr.duplicate { background: #fffbe6; }
+.preview-tag { display: inline-block; padding: .1rem .45rem; border-radius: 8px; font-size: .68rem; font-weight: 600; }
+.preview-tag.new { background: #e3f4ea; color: #1f7a4a; }
+.preview-tag.dup { background: #fef3cd; color: #7a5e1c; }
+.preview-tag.err { background: #fde2e2; color: #a52c2c; }
+.import-summary { background: #f4f9fe; border-radius: 12px; padding: .8rem 1rem; font-size: .85rem; color: #2d4a60; margin-bottom: .8rem; }
+.import-summary strong { color: #1b4a6b; }
+.radio-line { display: flex; align-items: center; gap: .5rem; font-size: .88rem; margin-top: .4rem; cursor: pointer; color: #2d4a60; }
+.radio-line input { accent-color: #2c6e9c; }
+.help-csv { background: #f4f9fe; border-radius: 12px; padding: .8rem 1rem; font-size: .82rem; color: #2d4a60; margin-bottom: 1rem; line-height: 1.6; }
+.help-csv code { background: #e3eff9; padding: .1rem .3rem; border-radius: 4px; font-size: .8rem; color: #1b4a6b; }
+.help-csv .format-box { background: white; border: 1px solid #dbe2e8; border-radius: 8px; padding: .5rem .8rem; margin: .4rem 0; font-family: monospace; font-size: .78rem; color: #2d4a60; }
+.search-wrapper { position: relative; }
+.search-input { width: 100%; border: 1px solid #dbe2e8; border-radius: 14px; padding: .75rem 1rem .75rem 2.6rem; font-size: .92rem; background: #fafdff; }
+.search-input:focus { border-color: #2c6e9c; box-shadow: 0 0 0 3px rgba(44,110,156,.1); outline: none; background: white; }
+.search-wrapper i.fa-search { position: absolute; left: .9rem; top: 50%; transform: translateY(-50%); color: #8aa0b0; }
+.result-list { max-height: 320px; overflow-y: auto; border: 1px solid #e2e9f0; border-radius: 14px; }
+.result-item { padding: .75rem 1rem; border-bottom: 1px solid #edf2f7; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.result-item:last-child { border-bottom: none; }
+.result-item:hover, .result-item.active { background: #eaf4fc; }
+.result-item .result-name { font-weight: 500; color: #1a2e3f; font-size: .92rem; }
+.result-item .result-meta { font-size: .75rem; color: #8aa0b0; }
+.result-empty { padding: 1.5rem; text-align: center; color: #8aa0b0; font-size: .88rem; }
+
+.badge { display: inline-flex; align-items: center; gap: .3rem; padding: .2rem .6rem; border-radius: 20px; font-size: .72rem; font-weight: 600; }
+.badge.inscrit { background: #e3f4ea; color: #1f7a4a; }
+.badge.noninscrit { background: #fdeee3; color: #a0561e; }
+.badge.matins { background: #e3eff9; color: #1b4a6b; }
+.badge.soirs { background: #f5e8f4; color: #7a2c6b; }
+.badge.matinssoirs { background: #e8f0e3; color: #3d6b1f; }
+.empty-state { text-align: center; padding: 2.5rem 1rem; color: #8aa0b0; }
+.empty-state i { font-size: 2.5rem; margin-bottom: .8rem; color: #cfdae4; display: block; }
+.total-badge { background: #e3eff9; border-radius: 20px; padding: .5rem 1.2rem; font-weight: 600; color: #1b4a6b; font-size: 1.05rem; display: inline-flex; align-items: center; gap: .5rem; }
+.total-badge i { color: #2c6e9c; }
+.check-paye { width: 1.15rem; height: 1.15rem; accent-color: #2c6e9c; cursor: pointer; }
+.reste-du-box { background: #fef6e0; border-radius: 18px; padding: 1.2rem 1.8rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; border: 1px solid #fdeec5; }
+.reste-du-box span:first-child { font-weight: 500; color: #7a5e1c; display: flex; align-items: center; gap: .6rem; }
+.reste-du-box .montant { font-size: 1.4rem; font-weight: 700; color: #a07d1e; }
+
+/* ============================================================
+   7. FICHE DE PRÉSENCE (AFFICHAGE À L'ÉCRAN)
+   ============================================================ */
+.fiche-wrapper { 
+  display: flex; 
+  justify-content: center; 
+  padding: 1rem 0; 
+  overflow-x: auto; 
+  background: #e9eef4; 
+  width: 100%;  
+}
+
+.fiche-doc { 
+  background: white; 
+   width: 297mm; 
+  height: 210mm;
+  padding: 5mm 8mm; 
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+  color: #1a1a1a; 
+  box-shadow: 0 4px 24px rgba(0,0,0,.12); 
+  display: flex; 
+  flex-direction: column; 
+  box-sizing: border-box; 
+  font-size: 8pt; 
+  margin: 0 auto;
+}
+
+.fiche-doc .fiche-entete { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3mm; gap: 5mm; }
+.fiche-doc .fiche-titre { font-size: 12pt; font-weight: 700; flex-shrink: 0; color: #1a2e3f; letter-spacing: -.01em; }
+.fiche-doc .fiche-mention { font-size: 7pt; font-style: italic; color: #4b5563; flex: 1; text-align: right; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Structure des deux tableaux côte à côte */
+.fiche-doc .fiche-corps { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 2mm; /* Espace très réduit entre les deux tableaux */
+  flex: 1; 
+}
+
+.fiche-tableau { width: 100%; border-collapse: collapse; font-size: 7.5pt; table-layout: fixed; }
+.fiche-tableau th, .fiche-tableau td { border: 1px dashed #666; padding: 0.8mm 0.5mm; text-align: center; vertical-align: middle; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.fiche-tableau th { font-weight: 600; font-size: 7pt; }
+
+/* Proportions des colonnes (Total = 100%) */
+.fiche-tableau .col-nom    { width: 25%; }  
+.fiche-tableau .col-prenom { width: 14%; }  
+.fiche-tableau .col-arrivee{ width: 14%; }  
+.fiche-tableau .col-sign1  { width: 14%; }  
+.fiche-tableau .col-pres   { width: 5%; }   
+.fiche-tableau .col-depart { width: 14%; }  
+.fiche-tableau .col-sign2  { width: 14%; }  
+
+/* En-tête Date / Matin / Soir (Ligne plus fine) */
+.fiche-tableau .ligne-date-zone th { 
+  font-size: 9pt; 
+  font-weight: 600; 
+  padding: 0.8mm 1mm; 
+}
+.fiche-tableau .ligne-date-zone .cell-date { text-align: left; padding-left: 3mm; }
+.fiche-tableau .ligne-date-zone .cell-matin { background: #f5f9fb; }
+.fiche-tableau .ligne-date-zone .cell-soir { background: #f5f9fb; }
+
+/* En-tête des sections (Garderie du matin, etc.) */
+.fiche-tableau .ligne-entete-section th { font-size: 7pt; padding: 1.2mm 0.5mm; }
+.fiche-tableau .ligne-entete-section .cell-titre { text-align: center; font-weight: 700; font-size: 7.5pt; }
+
+/* Lignes des enfants */
+.fiche-tableau .ligne-enfant td { height: 6mm; background: white; }
+.fiche-tableau .ligne-enfant .cell-nom { font-weight: 600; }
+.fiche-tableau .ligne-enfant .cell-pres { font-size: 8pt; padding: 0; }
+
+/* ---------- COULEURS DES SECTIONS ET LIGNES REPÈRES ---------- */
+
+/* MATIN */
+.type-matin .cell-titre { background: #BFDDEA; }
+.type-matin .col-arrivee, .type-matin .col-sign1 { background: #BFDDEA; }
+.type-matin .col-pres, .type-matin .col-depart, .type-matin .col-sign2 { background: #DDECD2; }
+.type-matin.ligne-repere .cell-nom, .type-matin.ligne-repere .cell-prenom { background: #BFDDEA; }
+.type-matin.ligne-repere .col-arrivee, .type-matin.ligne-repere .col-sign1 { background: #BFDDEA; }
+.type-matin.ligne-repere .col-pres, .type-matin.ligne-repere .col-depart, .type-matin.ligne-repere .col-sign2 { background: #DDECD2; }
+
+/* MATIN & SOIR */
+.type-matin_soir .cell-titre, .type-matin_soir .col-arrivee, .type-matin_soir .col-sign1, .type-matin_soir .col-pres, .type-matin_soir .col-depart, .type-matin_soir .col-sign2 { background: #CCDD9B; }
+.type-matin_soir.ligne-repere .cell-nom, .type-matin_soir.ligne-repere .cell-prenom, .type-matin_soir.ligne-repere .col-arrivee, .type-matin_soir.ligne-repere .col-sign1, .type-matin_soir.ligne-repere .col-pres, .type-matin_soir.ligne-repere .col-depart, .type-matin_soir.ligne-repere .col-sign2 { background: #CCDD9B; }
+
+/* SOIR */
+.type-soir .cell-titre { background: #B0D89F; }
+.type-soir .col-arrivee, .type-soir .col-sign1 { background: #DDECD2; }
+.type-soir .col-pres, .type-soir .col-depart, .type-soir .col-sign2 { background: #B0D89F; }
+.type-soir.ligne-repere .cell-nom, .type-soir.ligne-repere .cell-prenom { background: #B0D89F; }
+.type-soir.ligne-repere .col-arrivee, .type-soir.ligne-repere .col-sign1 { background: #DDECD2; }
+.type-soir.ligne-repere .col-pres, .type-soir.ligne-repere .col-depart, .type-soir.ligne-repere .col-sign2 { background: #B0D89F; }
+
+/* OCCASIONNEL */
+.type-occasionnel .cell-titre, .type-occasionnel .col-arrivee, .type-occasionnel .col-sign1, .type-occasionnel .col-pres, .type-occasionnel .col-depart, .type-occasionnel .col-sign2 { background: #DDECD2; }
+.type-occasionnel.ligne-repere .cell-nom, .type-occasionnel.ligne-repere .cell-prenom, .type-occasionnel.ligne-repere .col-arrivee, .type-occasionnel.ligne-repere .col-sign1, .type-occasionnel.ligne-repere .col-pres, .type-occasionnel.ligne-repere .col-depart, .type-occasionnel.ligne-repere .col-sign2 { background: #DDECD2; }
+
+/* Réduction auto de police */
+.nom-long { font-size: 6.8pt !important; }
+.nom-tres-long { font-size: 6.2pt !important; }
+.nom-mini { font-size: 5.6pt !important; }
+
+/* Étirement de la fiche */
+.fiche-wrapper, .fiche-doc { height: 100%; }
+
+/* Centrer les champs de saisie dans le tableau des enfants */
+.enfant-table td input.input-field,
+.enfant-table td select.input-field {
+  text-align: center;
+}
