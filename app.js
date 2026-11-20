@@ -637,8 +637,8 @@
     if (document.getElementById('statSoir')) document.getElementById('statSoir').textContent = statSoir;
     if (document.getElementById('statEquiv')) document.getElementById('statEquiv').textContent = statEquiv;
 
-    const zoneCreneau = document.getElementById('zoneFiltreCreneau'); 
-    if (zoneCreneau) zoneCreneau.style.display = (sousTabActif === 'inscrit') ? '' : 'none';
+    const zoneCreneau = document.getElementById('filtresCreneau'); 
+    if (zoneCreneau) zoneCreneau.parentElement.style.display = (sousTabActif === 'inscrit') ? '' : 'none';
 
     const filtreInput = document.getElementById('filtreEnfants');
     const query = normalizeStr((filtreInput?.value || '').trim());
