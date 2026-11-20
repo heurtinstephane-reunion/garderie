@@ -564,16 +564,8 @@ body { background: #f4f7fc; display: flex; justify-content: center; padding: 1.5
     gap: 0.6rem;
   }
 
-  /* 7. ONGLET IMPRESSION */
-  .fiche-wrapper {
-    overflow-x: auto; /* Permet de scroller horizontalement sur la fiche */
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 1rem;
-  }
-  .fiche-doc {
-    width: 800px; /* Force la largeur de la fiche pour qu'elle soit lisible */
-    transform-origin: top left;
-  }
+  /* 7. ONGLET IMPRESSION (la fiche garde ses proportions A4, l'échelle est gérée par le JS) */
+  .hint-pivot { display: flex; align-items: center; gap: .5rem; justify-content: center; font-size: .8rem; color: #5f7484; background: #f4f9fe; border: 1px solid #e2e9f0; border-radius: 12px; padding: .6rem 1rem; margin: .8rem auto 0; max-width: 95%; text-align: left; }
 
   /* 8. MODALES */
   .modal {
@@ -612,3 +604,23 @@ body { background: #f4f7fc; display: flex; justify-content: center; padding: 1.5
 .doc-note { background: #fdf9ec; border: 1px solid #f0e2b6; border-left: 4px solid #d9b23f; border-radius: 12px; padding: .9rem 1.2rem; margin: 1rem 0; font-size: .88rem; color: #6b5a20; line-height: 1.6; }
 .doc-pied { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid #eaf3fa; color: #8aa0b0; }
 @media print { .doc-content h3 { color: #1a2e3f; } .doc-alerte, .doc-note { background: none; } }
+
+/* ============================================================
+   APERÇU DE LA FICHE : MISE À L'ÉCHELLE PROPORTIONNELLE
+   La fiche .fiche-doc garde TOUJOURS ses dimensions A4 réelles.
+   Le JS réduit l'affichage via transform: scale (fiche-scale-box)
+   -> aperçu proportionnel sur tous les écrans, PDF indépendant.
+   ============================================================ */
+.fiche-scale-box { flex: 0 0 auto; margin: 0 auto; overflow: hidden; }
+.hint-pivot { display: none; }
+@media (max-width: 640px) {
+  .hint-pivot { display: flex; }
+}
+@media (min-width: 641px) {
+  .hint-pivot { display: none !important; }
+}
+@media print {
+  .fiche-scale-box { width: auto !important; height: auto !important; }
+  .fiche-doc { transform: none !important; }
+  .hint-pivot { display: none !important; }
+}

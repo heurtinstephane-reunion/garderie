@@ -1607,6 +1607,35 @@
     const [occG2, occD2] = completer(occG, occD);
     
     ficheContent.innerHTML = `<div class="fiche-entete"><div class="fiche-titre">- Fiche des présences quotidiennes en Garderie -</div><div class="fiche-mention">Les horaires et les signatures sont apposés pour un transfert de responsabilité en bonne et due forme</div></div><div class="fiche-corps">${construireTableau(matinG2, msG2, soirG2, occG2, true)}${construireTableau(matinD2, msD2, soirD2, occD2, false)}</div>`;
+    ajusterApercuFiche(); 
+  }
+
+  // Réajuste l'aperçu quand l'écran change (rotation du téléphone, redimensionnement de fenêtre)
+  let resizeFicheTimer = null; 
+  window.addEventListener('resize', () => { 
+    clearTimeout(resizeFicheTimer); 
+    resizeFicheTimer = setTimeout(ajusterApercuFiche, 150); 
+  });
+
+  /* Ajuste l'aperçu de la fiche à la largeur de l'écran sans jamais la déformer :
+     la fiche garde ses dimensions A4 réelles, on la réduit via transform: scale(). */
+  function ajusterApercuFiche() { 
+    const fiche = document.getElementById('ficheContent'); 
+    if (!fiche || !fiche.offsetWidth) return; 
+    let box = fiche.parentElement; 
+    if (!box || box.className !== 'fiche-scale-box') { 
+      box = document.createElement('div'); 
+      box.className = 'fiche-scale-box'; 
+      fiche.parentNode.insertBefore(box, fiche); 
+      box.appendChild(fiche); 
+    } 
+    const dispo = box.parentElement.clientWidth - 32; 
+    const largeur = fiche.offsetWidth; 
+    const scale = Math.min(1, dispo / largeur); 
+    box.style.width = Math.round(largeur * scale) + 'px'; 
+    box.style.height = Math.round(fiche.offsetHeight * scale) + 'px'; 
+    fiche.style.transform = 'scale(' + scale + ')'; 
+    fiche.style.transformOrigin = 'top left'; 
   }
 
   // 2. La génération du PDF (LA VRAIE SOLUTION PROPRE)
@@ -1618,14 +1647,26 @@
       btnImprimerFiche.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Génération...';
       btnImprimerFiche.disabled = true;
 
+      // On capture un CLONE hors-écran aux vraies dimensions A4, 
+      // pour que le PDF soit identique quel que soit l'appareil (téléphone, tablette, PC).
+      const capture = element.cloneNode(true); 
+      capture.removeAttribute('id'); 
+      capture.style.transform = 'none'; 
+      capture.style.margin = '0'; 
+      capture.style.position = 'fixed'; 
+      capture.style.left = '-20000px'; 
+      capture.style.top = '0'; 
+      document.body.appendChild(capture); 
+
       // Utilisation de html2canvas pour capturer l'élément
-      html2canvas(element, {
+      html2canvas(capture, {
         scale: 2, // Haute résolution
         useCORS: true,
         backgroundColor: '#ffffff',
-        windowWidth: element.scrollWidth, // Empêche le recadrage
-        windowHeight: element.scrollHeight
+        windowWidth: capture.scrollWidth, // Empêche le recadrage
+        windowHeight: capture.scrollHeight
       }).then(canvas => {
+        document.body.removeChild(capture); 
         const imgData = canvas.toDataURL('image/jpeg', 1.0);
         
         // Initialisation de jsPDF en A4 paysage
@@ -1662,6 +1703,7 @@
         btnImprimerFiche.innerHTML = originalText;
         btnImprimerFiche.disabled = false;
       }).catch(err => {
+        if (capture.parentNode) document.body.removeChild(capture); 
         console.error(err);
         btnImprimerFiche.innerHTML = originalText;
         btnImprimerFiche.disabled = false;
