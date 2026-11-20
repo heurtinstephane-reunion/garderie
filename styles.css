@@ -624,3 +624,7 @@ body { background: #f4f7fc; display: flex; justify-content: center; padding: 1.5
   .fiche-doc { transform: none !important; }
   .hint-pivot { display: none !important; }
 }
+
+/* Neutralise le "font boosting" de Chrome mobile : sans cela, les textes de la fiche
+   sont agrandis sur écran étroit et le PDF capturé sort avec des lignes grossies. */
+.fiche-doc { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }

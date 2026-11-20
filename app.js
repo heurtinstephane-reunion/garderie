@@ -1617,8 +1617,9 @@
     resizeFicheTimer = setTimeout(ajusterApercuFiche, 150); 
   });
 
-  /* Ajuste l'aperçu de la fiche à la largeur de l'écran sans jamais la déformer :
-     la fiche garde ses dimensions A4 réelles, on la réduit via transform: scale(). */
+  /* Ajuste l'aperçu de la fiche à la largeur de l'écran sans jamais la déformer.
+     Dimensions A4 en CONSTANTES (297x210mm = 1122.5x793.7px à 96dpi) : aucune mesure
+     récursive, donc pas de boucle de rétroaction (le rognage progressif en rotation). */
   function ajusterApercuFiche() { 
     const fiche = document.getElementById('ficheContent'); 
     if (!fiche || !fiche.offsetWidth) return; 
@@ -1629,11 +1630,14 @@
       fiche.parentNode.insertBefore(box, fiche); 
       box.appendChild(fiche); 
     } 
+    const LARGEUR_A4 = 1122.5, HAUTEUR_A4 = 793.7;  // 297mm x 210mm 
     const dispo = box.parentElement.clientWidth - 32; 
-    const largeur = fiche.offsetWidth; 
-    const scale = Math.min(1, dispo / largeur); 
-    box.style.width = Math.round(largeur * scale) + 'px'; 
-    box.style.height = Math.round(fiche.offsetHeight * scale) + 'px'; 
+    const scale = Math.min(1, dispo / LARGEUR_A4); 
+    box.style.width = Math.round(LARGEUR_A4 * scale) + 'px'; 
+    box.style.height = Math.round(HAUTEUR_A4 * scale) + 'px'; 
+    // Largeur/hauteur imposées en inline : prime sur la règle CSS height:100%
+    fiche.style.width = '297mm'; 
+    fiche.style.height = '210mm'; 
     fiche.style.transform = 'scale(' + scale + ')'; 
     fiche.style.transformOrigin = 'top left'; 
   }
@@ -1656,6 +1660,12 @@
       capture.style.position = 'fixed'; 
       capture.style.left = '-20000px'; 
       capture.style.top = '0'; 
+      // Dimensions A4 imposées en inline + font boosting neutralisé (sinon Chrome mobile
+      // grossit les textes du clone en portrait et déforme le PDF)
+      capture.style.width = '297mm'; 
+      capture.style.height = '210mm'; 
+      capture.style.webkitTextSizeAdjust = '100%'; 
+      capture.style.textSizeAdjust = '100%'; 
       document.body.appendChild(capture); 
 
       // Utilisation de html2canvas pour capturer l'élément
