@@ -837,22 +837,18 @@ body { background: #f4f7fc; display: flex; justify-content: center; padding: 1.5
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.enfant-table .col-nom .input-field,
-.enfant-table .col-prenom .input-field { display: none; }
-.enfant-table tr.editing .enfant-valeur { display: none; }
-.enfant-table tr.editing .col-nom .input-field,
-.enfant-table tr.editing .col-prenom .input-field {
-  display: block;
-  width: 100%;
-}
-.enfant-table td.label-col { display: none; }
-.enfant-table td.actions-col {
-  display: flex;
-  flex-direction: column;
+.enfant-table .btn-valider { color: #1e7d45; font-size: 1.1rem; }
+.enfant-table .btn-valider:hover { color: #155c33; }
+
+/* Texte d'aide quand rien n'est sélectionné */
+.hint-selection {
+  font-size: .8rem;
+  color: #6f8698;
+  display: inline-flex;
   align-items: center;
-  gap: .3rem;
+  gap: .4rem;
 }
-.enfant-table .btn-edit { color: #2c6e9c; font-size: 1rem; }
+.hint-selection i { font-size: .78rem; color: #2c6e9c; }
 
 /* ---------- SMARTPHONE (portrait) ---------- */
 @media (max-width: 640px) {
@@ -866,59 +862,45 @@ body { background: #f4f7fc; display: flex; justify-content: center; padding: 1.5
   }
   .stats-bandeau .stat-sep { display: none; }
 
-  /* ENFANTS : carte à 5 colonnes
-     Ligne 1 : [coche] [Nom] [Prénom] [✏️]
-     Ligne 2 : [Nom] [Prénom] [Statut] [corbeille] */
+  /* ENFANTS : carte à 4 colonnes
+     Ligne 1 : [coche] [Nom] [Prénom]
+     (en édition : [✓] en 4e colonne)
+     Ligne 2 : Type d'inscription (pleine largeur) */
   .enfant-table tr {
-    grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.25fr) auto;
+    grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr) auto;
   }
   .enfant-table td:first-child {
     float: none;
     width: auto;
     margin: 0;
+    margin-top: 0;
     display: flex;
   }
-  .enfant-table .col-nom { grid-row: 1; grid-column: 2; padding: .1rem 0; }
-  .enfant-table .col-prenom { grid-row: 1; grid-column: 3; padding: .1rem 0; }
-  .enfant-table td.label-col {
-    display: block;
-    width: auto;
-    margin: 0;
-    padding: 0;
-    font-size: .62rem;
-    font-weight: 500;
-    color: #8aa0b0;
-    text-transform: uppercase;
-    letter-spacing: .04em;
-    text-align: center;
-  }
-  .enfant-table td.label-col:nth-child(4) { grid-row: 2; grid-column: 2; }
-  .enfant-table td.label-col:nth-child(5) { grid-row: 2; grid-column: 3; }
-  .enfant-table .col-statut {
+  .enfant-table .col-nom { grid-row: 1; grid-column: 2; width: auto; margin-left: 0; padding: .1rem 0; }
+  .enfant-table .col-prenom { grid-row: 1; grid-column: 3; width: auto; margin-left: 0; padding: .1rem 0; }
+  .enfant-table td.col-statut {
     grid-row: 2;
+    grid-column: 1 / -1;
+    width: auto;
+    margin-left: 0;
+    padding: .15rem 0 0 0;
+  }
+  .enfant-table td.col-statut .input-field {
+    width: 100%;
+    font-size: .78rem;
+    padding: .32rem .4rem;
+  }
+  .enfant-table td.col-valider {
+    grid-row: 1;
     grid-column: 4;
     width: auto;
     margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .enfant-table .col-statut .input-field {
-    width: 100%;
-    font-size: .7rem;
-    padding: .3rem .15rem;
-  }
-  .enfant-table td.actions-col { display: contents; }
-  .enfant-table td.actions-col .btn-edit {
-    grid-row: 1;
-    grid-column: 5;
-    justify-self: center;
-    font-size: .95rem;
-  }
-  .enfant-table td.actions-col .btn-icon.danger {
-    position: static;
-    grid-row: 2;
-    grid-column: 5;
-    justify-self: center;
-    margin: 0;
-  }
+  .enfant-table td.col-valider .btn-valider { font-size: 1.25rem; }
 
   /* POINTAGE : mêmes repères verticaux entre l'en-tête enfant et les lignes
      Colonne 5 = montant, colonne 6 = icône (photo / corbeille) */

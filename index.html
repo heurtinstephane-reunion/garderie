@@ -90,6 +90,9 @@
             <i class="fas fa-users" style="color:#2c6e9c;"></i> Enfants
           </h2>
           <button class="btn btn-primary" id="btnAjouterEnfant" style="padding:.4rem .8rem; font-size:.82rem;"><i class="fas fa-plus"></i> Ajouter</button>
+          <span id="hintSelection" class="hint-selection"><i class="fas fa-hand-pointer"></i> Sélectionnez au moins un enfant pour Modifier ou Supprimer.</span>
+          <button class="btn btn-ghost" id="btnModifierSelection" hidden style="padding:0.4rem 0.8rem; font-size:0.82rem;"><i class="fas fa-pen"></i> Modifier</button>
+          <button class="btn btn-danger" id="btnSupprimerSelection" hidden style="padding:0.4rem 0.8rem; font-size:0.82rem;"><i class="fas fa-trash-alt"></i> Supprimer</button>
         </div>
         
       </div>
@@ -133,11 +136,6 @@
     <input type="checkbox" id="checkAllVisible" class="check-select" style="cursor: pointer; width: 1.1rem; height: 1.1rem; accent-color: #2c6e9c;">
     <label for="checkAllVisible" id="labelCheckAll" style="cursor: pointer; margin: 0;">Tout sélectionner</label>
     <span id="compteurSelection" style="background: #8aa0b0; color: white; padding: 0.1rem 0.6rem; border-radius: 20px; font-size: 0.75rem; margin-left: 0.5rem;">0 sélectionné(s)</span>
-  </div>
-  
-  <div style="display: flex; gap: 0.5rem;">
-    <button class="btn btn-ghost" id="btnBasculer" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;"><i class="fas fa-exchange-alt"></i> Basculer statut</button>
-    <button class="btn btn-danger" id="btnSupprimerSelection" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;"><i class="fas fa-trash-alt"></i> Supprimer</button>
   </div>
 </div>
 
@@ -309,7 +307,8 @@
       <ul>
         <li>Allez dans l'onglet <strong>« Enfants »</strong>.</li>
         <li>Cliquez sur <strong>« Ajouter »</strong> pour créer un nouvel enfant.</li>
-        <li>Si un enfant part, cliquez sur la <strong>petite poubelle</strong> à côté de son nom.</li>
+        <li>Si un enfant part, cochez sa case puis cliquez sur <strong>« Supprimer »</strong> (bouton en haut, à côté d'« Ajouter »). La poubelle n'apparaît qu'après sélection.</li>
+        <li>Pour corriger un <strong>nom</strong> ou un <strong>prénom</strong> (ou changer le type d'inscription de plusieurs enfants), cochez-les puis cliquez sur <strong>« Modifier »</strong>. Saisissez les corrections, puis validez chaque enfant avec la <strong>coche verte ✓</strong> à droite de sa ligne.</li>
         <li>Si un enfant change de créneau, modifiez son type d'inscription directement dans le tableau.</li>
       </ul>
       <div class="doc-alerte">⚠️ <strong>Attention avant de supprimer un enfant :</strong><br>Si un enfant a été en garderie et que des sommes sont encore dues, supprimer sa fiche effacera tous ses enregistrements de pointage.<br>Avant de le supprimer, vérifiez bien que les impressions d'écran (ou les PDF) ont été faites, notamment si la famille n'a pas encore réglé ce qu'elle doit.</div>

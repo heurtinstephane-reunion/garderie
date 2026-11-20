@@ -30,6 +30,7 @@
 
   let sousTabActif = 'inscrit';
   let selection = new Set();
+  let idsEnEdition = new Set(); // Enfants actuellement modifiables (via bouton « Modifier »)
   let importPreview = null;
   let dragContext = null;
   let dragOverInfo = null;
@@ -608,6 +609,13 @@
       el.textContent = selection.size + ' sélectionné(s)'; 
       el.style.background = '#1b4a6b'; // Bleu foncé
     } 
+
+    const hint = document.getElementById('hintSelection');
+    const btnMod = document.getElementById('btnModifierSelection');
+    const btnSup = document.getElementById('btnSupprimerSelection');
+    if (hint) hint.style.display = selection.size === 0 ? '' : 'none';
+    if (btnMod) btnMod.hidden = selection.size === 0;
+    if (btnSup) btnSup.hidden = selection.size === 0;
   }
 
   function renderEnfants() {
@@ -685,22 +693,21 @@
       <th style="text-align: center;">Nom</th>
       <th style="text-align: center;">Prénom</th>
       ${sousTabActif === 'inscrit' ? '<th style="text-align: center;">Type d\'inscription</th>' : ''}
-      <th style="width:60px;"></th>
     </tr></thead><tbody></tbody>`;
     
     const tb = table.querySelector('tbody');
     
     liste.forEach(e => {
+      const enEdition = idsEnEdition.has(e.id);
       const tr = document.createElement('tr'); 
       if (selection.has(e.id)) tr.classList.add('selected'); 
+      if (enEdition) tr.classList.add('editing');
       tr.dataset.rowId = e.id;
       tr.innerHTML = `<td class="check-col"><input type="checkbox" class="check-select row-check" data-id="${e.id}" ${selection.has(e.id) ? 'checked' : ''}></td>
-        <td class="col-nom"><span class="enfant-valeur">${escapeHtml(e.nom)}</span><input type="text" class="input-field" value="${escapeHtml(e.nom)}" data-id="${e.id}" data-field="nom" style="text-align: center;"></td>
-        <td class="col-prenom"><span class="enfant-valeur">${escapeHtml(e.prenom)}</span><input type="text" class="input-field" value="${escapeHtml(e.prenom)}" data-id="${e.id}" data-field="prenom" style="text-align: center;"></td>
-        <td class="label-col">Nom</td>
-        <td class="label-col">Prénom</td>
+        <td class="col-nom">${enEdition ? `<input type="text" class="input-field" value="${escapeHtml(e.nom)}" data-id="${e.id}" data-field="nom" style="text-align: center;">` : `<span class="enfant-valeur">${escapeHtml(e.nom)}</span>`}</td>
+        <td class="col-prenom">${enEdition ? `<input type="text" class="input-field" value="${escapeHtml(e.prenom)}" data-id="${e.id}" data-field="prenom" style="text-align: center;">` : `<span class="enfant-valeur">${escapeHtml(e.prenom)}</span>`}</td>
         ${sousTabActif === 'inscrit' ? `<td class="col-statut"><select class="input-field" data-id="${e.id}" data-field="inscription" style="text-align: center;"><option value="matin" ${e.inscription === 'matin' ? 'selected' : ''}>Matin uniquement</option><option value="soir" ${e.inscription === 'soir' ? 'selected' : ''}>Soir uniquement</option><option value="matin_soir" ${e.inscription === 'matin_soir' ? 'selected' : ''}>Matin et soir</option></select></td>` : ''}
-        <td class="actions-col"><button class="btn-icon btn-edit" data-edit="${e.id}" title="Modifier le nom et le prénom"><i class="fas fa-edit"></i></button><button class="btn-icon danger" data-del="${e.id}" title="Supprimer"><i class="fas fa-trash-alt"></i></button></td>`;
+        ${enEdition ? `<td class="col-valider"><button class="btn-icon btn-valider" data-valider="${e.id}" title="Valider et revenir en lecture seule"><i class="fas fa-check-circle"></i></button></td>` : ''}`;
       tb.appendChild(tr);
     });
 
@@ -722,33 +729,18 @@
         } 
       });
       wrap.addEventListener('click', async ev => { 
-        const editBtn = ev.target.closest('[data-edit]'); 
-        if (editBtn) { 
-          const tr = editBtn.closest('tr'); 
-          if (tr && !tr.classList.contains('editing')) { 
-            tr.classList.add('editing'); 
-            const inp = tr.querySelector('input[data-field="nom"]'); 
-            if (inp) { inp.focus(); if (inp.select) inp.select(); } 
-          } 
-          return; 
-        } 
-        const delBtn = ev.target.closest('[data-del]'); 
-        if (delBtn) { 
-          const id = delBtn.dataset.del; 
-          const enfant = enfantById(id); 
-          if (!enfant) return; 
-          const ok = await showConfirm('Supprimer ' + nomComplet(enfant) + ' de la liste ?'); 
-          if (!ok) return; 
-          state.enfants = state.enfants.filter(e => e.id !== id); 
-          selection.delete(id); 
-          save(); renderEnfants(); renderFacturation(); renderTarification(); 
+        const validerBtn = ev.target.closest('[data-valider]'); 
+        if (validerBtn) { 
+          idsEnEdition.delete(validerBtn.dataset.valider); 
+          renderEnfants(); 
         } 
       });
       wrap.addEventListener('change', ev => { 
         const cb = ev.target; 
         if (cb.matches('.row-check')) { 
           const id = cb.dataset.id; 
-          if (cb.checked) selection.add(id); else selection.delete(id); 
+          if (cb.checked) selection.add(id); 
+          else { selection.delete(id); if (idsEnEdition.delete(id)) { renderEnfants(); return; } } 
           const tr = cb.closest('tr'); 
           if (tr) tr.classList.toggle('selected', cb.checked); 
           updateCheckAll(); // Met à jour la case du haut
@@ -826,24 +818,14 @@
   }
   
 
-  const btnBasculer = document.getElementById('btnBasculer'); 
-  if (btnBasculer) { 
-    btnBasculer.addEventListener('click', async () => { 
+  const btnModifierSelection = document.getElementById('btnModifierSelection'); 
+  if (btnModifierSelection) { 
+    btnModifierSelection.addEventListener('click', () => { 
       if (selection.size === 0) return; 
-      const newStatut = sousTabActif === 'inscrit' ? 'non_inscrit' : 'inscrit'; 
-      const cible = newStatut === 'inscrit' ? 'inscrits' : 'non inscrits'; 
-      const ok = await showConfirm(`Basculer ${selection.size} enfant(s) en « ${cible} » ?`); 
-      if (!ok) return; 
-      selection.forEach(id => { 
-        const e = enfantById(id); 
-        if (e) { 
-          e.statut = newStatut; 
-          if (newStatut === 'non_inscrit') e.inscription = ''; 
-          else if (!e.inscription) e.inscription = 'matin_soir'; 
-        } 
-      }); 
-      selection.clear(); 
-      save(); renderEnfants(); renderFacturation(); renderTarification(); 
+      idsEnEdition = new Set(selection); 
+      renderEnfants(); 
+      const premier = document.querySelector('.enfant-table tr.editing input[data-field="nom"]'); 
+      if (premier) { premier.focus(); if (premier.select) premier.select(); } 
     }); 
   }
 
@@ -855,6 +837,7 @@
       if (!ok) return; 
       state.enfants = state.enfants.filter(e => !selection.has(e.id)); 
       selection.clear(); 
+      idsEnEdition.clear();
       save(); renderEnfants(); renderFacturation(); renderTarification(); 
     }); 
   }
@@ -865,6 +848,7 @@
       btn.classList.add('active'); 
       sousTabActif = btn.dataset.soustab; 
       selection.clear(); 
+      idsEnEdition.clear(); 
       renderEnfants(); 
     }); 
   });
@@ -1067,6 +1051,7 @@
       if (filtreEnfants) filtreEnfants.value = ''; 
       filtreCreneau = 'tous'; 
       document.querySelectorAll('.creneau-btn').forEach(b => b.classList.toggle('active', b.dataset.creneau === 'tous')); 
+      idsEnEdition = new Set([nouvel.id]); 
       renderEnfants(); 
       renderTarification();
       setTimeout(() => { 
