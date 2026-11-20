@@ -17,11 +17,48 @@
   </header>
 
   <div class="tabs">
+    <button class="tab-btn" data-tab="accueil"><i class="fas fa-home"></i> Accueil</button>
+    <button class="tab-btn" data-tab="premiers_pas"><i class="fas fa-book-open"></i> Premiers pas</button>
     <button class="tab-btn active" data-tab="facturation"><i class="fas fa-euro-sign"></i> Pointage</button>
     <button class="tab-btn" data-tab="enfants"><i class="fas fa-users"></i> Enfants</button>
     <button class="tab-btn" data-tab="tarification"><i class="fas fa-calculator"></i> Tarification</button>
     <button class="tab-btn" data-tab="impression"><i class="fas fa-print"></i> Impression</button>
     <button class="tab-btn" data-tab="parametres"><i class="fas fa-shield-alt"></i> Sauvegardes</button>
+  </div>
+
+  <!-- ================= ACCUEIL ================= -->
+  <div id="panneau-accueil" class="panneau">
+    <div class="card">
+      <h2 class="accueil-titre"><i class="fas fa-hand-holding-heart" style="color:#2c6e9c;"></i> Que souhaitez-vous faire aujourd'hui ?</h2>
+      <div class="accueil-grid">
+        <button class="accueil-btn" data-aller="facturation">
+          <i class="fas fa-euro-sign"></i>
+          <span class="accueil-btn-titre">Faire le pointage ?</span>
+          <span class="accueil-btn-desc">Relever les garderies occasionnelles et les retards du mois</span>
+        </button>
+        <button class="accueil-btn" data-aller="enfants">
+          <i class="fas fa-users"></i>
+          <span class="accueil-btn-titre">Modifier la liste des enfants</span>
+          <span class="accueil-btn-desc">Ajouter, supprimer ou changer le créneau d'un enfant</span>
+        </button>
+        <button class="accueil-btn" data-aller="tarification">
+          <i class="fas fa-calculator"></i>
+          <span class="accueil-btn-titre">Modifier des éléments de la tarification ?</span>
+          <span class="accueil-btn-desc">Prix du quart d'heure, garderie occasionnelle, tarifs inscrits</span>
+        </button>
+        <button class="accueil-btn" data-aller="impression">
+          <i class="fas fa-print"></i>
+          <span class="accueil-btn-titre">Imprimer des fiches de présences ?</span>
+          <span class="accueil-btn-desc">Aperçu et téléchargement de la fiche en A4 paysage</span>
+        </button>
+        <button class="accueil-btn" data-aller="parametres">
+          <i class="fas fa-shield-alt"></i>
+          <span class="accueil-btn-titre">Sauvegarder</span>
+          <span class="accueil-btn-desc">Exporter la sauvegarde JSON vers le Drive</span>
+        </button>
+      </div>
+      <p class="accueil-note"><i class="fas fa-book-open" style="margin-right:.4rem;"></i> Une question sur l'utilisation ? Tout le mode d'emploi est dans l'onglet <strong>« Premiers pas »</strong>.</p>
+    </div>
   </div>
 
   <!-- ================= POINTAGE ================= -->
@@ -189,6 +226,164 @@
         <button class="btn btn-light" id="btnImportJSON"><i class="fas fa-file-import"></i> Importer une sauvegarde (JSON)</button>
         <input type="file" id="inputJSON" accept=".json,application/json" style="display:none;">
       </div>
+    </div>
+  </div>
+
+  <!-- ================= PREMIERS PAS (DOCUMENTATION) ================= -->
+  <div id="panneau-premiers_pas" class="panneau">
+    <div class="card doc-content">
+      <h2 class="doc-titre">🧑‍🏫 LA GARDERIE POUR LES NULS <span class="doc-sous-titre">(Le Mode d'emploi ultime)</span></h2>
+
+      <div class="doc-recap">
+        <h3>📋 LE RÉCAPITULATIF (À lire en 1 minute)</h3>
+        <p>Si vous ne lisez qu'une chose de ce document, lisez ceci. Voici les 7 étapes que vous aurez à réaliser.</p>
+        <ol>
+          <li><strong>Installer</strong> l'application sur votre ordinateur (une seule fois).</li>
+          <li><strong>Importer</strong> la liste des enfants au format CSV (une seule fois, en début d'année).</li>
+          <li><strong>Mettre à jour</strong> la liste au fil de l'année (arrivées, départs, changements).</li>
+          <li><strong>Imprimer</strong> les fiches de présence (toutes les 2 semaines, c'est une bonne pratique).</li>
+          <li><strong>Saisir le pointage</strong> en lisant les fiches (rechercher les garderies occasionnelles et les retards).</li>
+          <li><strong>Exporter</strong> la sauvegarde JSON vers le Drive (une fois par mois, obligatoire).</li>
+          <li><strong>Transmettre</strong> le récapitulatif au trésorier (Ctrl+P / ⌘+P).</li>
+        </ol>
+        <p><em>Les étapes 3 à 7 sont répétitives. Les étapes 1 et 2 ne se font qu'une seule fois.</em></p>
+      </div>
+
+      <h3>📖 AVANT-PROPOS : Comment ce document a été pensé</h3>
+      <p>Personne n'aime lire une documentation. Nous le savons.</p>
+      <p>Ce document a été conçu pour être le plus simple possible, avec une logique : <strong>apprendre en tâtonnant</strong>. L'application est faite pour être intuitive.</p>
+      <p>Si vous rencontrez une difficulté, vous pourrez vous référer aux détails ci-dessous. Mais la plupart du temps, vous n'aurez pas besoin de lire tout ça : le récapitulatif en 7 étapes suffit pour démarrer.</p>
+      <p><strong>Les règles d'or :</strong></p>
+      <ul>
+        <li><strong>Google Drive</strong> est votre coffre-fort (stockage).</li>
+        <li><strong>Votre ordinateur</strong> est votre espace de travail (l'application tourne en local).</li>
+        <li>L'application <strong>sauvegarde automatiquement dans votre navigateur</strong>. Mais un export mensuel vers le Drive est obligatoire pour ne rien perdre.</li>
+        <li>L'application fonctionne <strong>100% hors ligne</strong>. Seuls le téléchargement initial et l'export vers le Drive nécessitent Internet.</li>
+      </ul>
+      <p><em>(Cette application a été conçue avec l'aide de l'IA DeepSeek.)</em></p>
+
+      <h3>🚀 ÉTAPE 1 : Installation (UNE FOIS)</h3>
+      <ol>
+        <li>Rendez-vous sur le <strong>Google Drive de l'association</strong>. Vous y trouverez le dossier de l'application. Google Drive le propose au téléchargement sous forme de fichier <strong>.zip</strong>.</li>
+        <li>Téléchargez ce fichier .zip sur votre ordinateur.</li>
+        <li>Faites un clic droit dessus et choisissez <strong>« Extraire tout »</strong> (ou « Décompresser »).</li>
+        <li>Placez le dossier extrait là où vous le souhaitez (par exemple sur votre Bureau).</li>
+      </ol>
+      <p><strong>Créer un raccourci :</strong></p>
+      <ul>
+        <li>Ouvrez le dossier extrait. Vous verrez un fichier nommé <strong>index.html</strong>.</li>
+        <li>Faites un clic droit dessus → « Envoyer vers » → « Bureau (créer un raccourci) ».</li>
+        <li>Renommez ce raccourci en <strong>« Garderie »</strong>. C'est le seul raccourci dont vous aurez besoin.</li>
+      </ul>
+
+      <h3>📂 ÉTAPE 2 : Importer la liste des enfants (UNE FOIS, en début d'année)</h3>
+      <p>En début d'année, vous n'avez pas encore de sauvegarde JSON. Ce que vous avez, c'est le <strong>fichier Excel fourni par l'école</strong> (la liste des élèves).</p>
+      <ol>
+        <li>Ouvrez ce fichier Excel et faites une copie.</li>
+        <li>Supprimez toutes les colonnes inutiles pour ne garder que <strong>3 colonnes</strong> dans cet ordre :
+          <ul>
+            <li>Colonne 1 : Nom de l'enfant</li>
+            <li>Colonne 2 : Prénom de l'enfant</li>
+            <li>Colonne 3 : Type de garderie (Matin uniquement / Soir uniquement / Matin et soir / Non inscrit)</li>
+          </ul>
+        </li>
+        <li>Enregistrez ce fichier au format <strong>CSV (séparé par des points-virgules)</strong>.</li>
+        <li>Dans l'application, allez dans l'onglet <strong>« Enfants »</strong> et cliquez sur <strong>« Importer un tableau (CSV) »</strong>. Sélectionnez votre fichier.</li>
+        <li>Vérifiez l'aperçu, puis validez. Votre liste est créée.</li>
+      </ol>
+      <p><em>Si vous reprenez l'outil d'une personne qui vous l'a transmis, vous n'avez pas besoin de cette étape. Il vous suffit d'aller dans « Sauvegardes » et d'importer le fichier JSON qu'elle vous a laissé.</em></p>
+
+      <h3>👶 ÉTAPE 3 : Mettre à jour la liste (RÉPÉTITIF)</h3>
+      <p>L'école vous fournit une liste en début d'année, mais elle n'est plus mise à jour par la suite. Vous serez avertis par mail des arrivées et des départs. C'est donc à vous de mettre à jour l'application.</p>
+      <ul>
+        <li>Allez dans l'onglet <strong>« Enfants »</strong>.</li>
+        <li>Cliquez sur <strong>« Ajouter »</strong> pour créer un nouvel enfant.</li>
+        <li>Si un enfant part, cliquez sur la <strong>petite poubelle</strong> à côté de son nom.</li>
+        <li>Si un enfant change de créneau, modifiez son type d'inscription directement dans le tableau.</li>
+      </ul>
+      <div class="doc-alerte">⚠️ <strong>Attention avant de supprimer un enfant :</strong><br>Si un enfant a été en garderie et que des sommes sont encore dues, supprimer sa fiche effacera tous ses enregistrements de pointage.<br>Avant de le supprimer, vérifiez bien que les impressions d'écran (ou les PDF) ont été faites, notamment si la famille n'a pas encore réglé ce qu'elle doit.</div>
+
+      <h3>⚙️ ÉTAPE 4 : Vérifier les tarifs (UNE FOIS, en début d'année)</h3>
+      <p>Avant de commencer le pointage, assurez-vous que les tarifs sont à jour.</p>
+      <ul>
+        <li>Allez dans l'onglet <strong>« Tarification »</strong>.</li>
+        <li>Vérifiez le <strong>prix du quart d'heure de retard</strong>.</li>
+        <li>Vérifiez le <strong>prix de la garderie occasionnelle</strong>.</li>
+      </ul>
+      <p>C'est sur ces montants que l'application va calculer tout le reste. Si l'association a décidé d'augmenter les tarifs, c'est ici qu'il faut le faire.</p>
+
+      <h3>🖨️ ÉTAPE 5 : Imprimer les fiches de présence (RÉPÉTITIF)</h3>
+      <p><strong>Bonne pratique : imprimez les fiches toutes les deux semaines.</strong></p>
+      <p>Notre retour d'expérience montre qu'imprimer trop de fiches à l'avance conduit à devoir les jeter (ou les modifier à la main) à chaque arrivée ou départ. Deux semaines représentent généralement <strong>8 fiches</strong> à imprimer.</p>
+      <p>Vous pouvez vous aider du calendrier fourni par l'école en début d'année pour déterminer le nombre de fiches à imprimer à l'avance.</p>
+      <ol>
+        <li>Allez dans l'onglet <strong>« Impression »</strong>.</li>
+        <li>Cliquez sur <strong>« Télécharger en PDF »</strong>.</li>
+        <li>Imprimez le PDF et remettez-le aux surveillantes.</li>
+        <li>Les parents le rempliront à la main (heure d'arrivée, signature, heure de départ).</li>
+      </ol>
+
+      <h3>✍️ ÉTAPE 6 : Le pointage (RÉPÉTITIF - C'est le cœur du métier)</h3>
+      <p>C'est ici que vous allez entrer les informations récoltées sur les fiches de présence.</p>
+      <p><strong>Avant de commencer, posez-vous deux questions en lisant les fiches :</strong></p>
+      <ul>
+        <li>Y a-t-il eu des <strong>garderies occasionnelles</strong> ? (Un enfant non inscrit qui est venu, ou un enfant inscrit un jour où il ne devait pas l'être).</li>
+        <li>Y a-t-il eu des <strong>retards</strong> ? (Un parent qui est venu chercher son enfant après l'heure).</li>
+      </ul>
+      <p>Grâce à ces deux questions, vous allez pouvoir remplir sereinement la partie pointage sans rien oublier.</p>
+      <p><strong>Comment faire :</strong></p>
+      <ol>
+        <li>Allez dans l'onglet <strong>« Pointage »</strong>.</li>
+        <li>Sélectionnez le mois concerné.</li>
+        <li>Cliquez sur <strong>« Ajouter un enfant au mois »</strong> pour chaque enfant concerné.</li>
+        <li>Pour chaque enfant, ajoutez les dates, choisissez le moment (Matin, Soir, Matin et Soir) et indiquez le retard (+15 min, +30 min, etc.).</li>
+        <li>Le tarif se calcule tout seul. Ne vous prenez pas la tête, l'application applique les règles.</li>
+        <li>Une fois le mois terminé, cliquez sur <strong>« Marquer comme traité »</strong>.</li>
+      </ol>
+      <div class="doc-note"><strong>Note :</strong> cela ne change pas de mois automatiquement. Cela permet simplement de colorer le mois en vert, et de faire en sorte que l'application s'ouvre sur le mois suivant non traité la prochaine fois que vous la lancerez.</div>
+
+      <h3>💾 ÉTAPE 7 : La sauvegarde mensuelle (RÉPÉTITIF - OBLIGATOIRE)</h3>
+      <p>Les données sont stockées dans votre navigateur. Si vous videz votre cache ou changez d'ordinateur, <strong>vous perdez tout</strong>.</p>
+      <p><strong>Une fois par mois, vous devez faire une sauvegarde vers le Drive.</strong></p>
+      <ol>
+        <li>Dans l'application, allez dans l'onglet <strong>« Sauvegardes »</strong>.</li>
+        <li>Cliquez sur <strong>« Exporter la sauvegarde (JSON) »</strong>.</li>
+        <li>Un fichier <code>sauvegarde-garderie-AAAA-MM-JJ-HHhMM.json</code> se télécharge.</li>
+        <li>Déplacez ce fichier sur le <strong>Google Drive de l'association</strong> (dans le dossier prévu à cet effet).</li>
+      </ol>
+      <p><em>Conseil : gardez une seule sauvegarde par mois (pas besoin d'en faire tous les jours).</em></p>
+
+      <h3>🔍 ÉTAPE 8 : Transmettre les informations (RÉPÉTITIF)</h3>
+      <p><strong>Pour le trésorier :</strong></p>
+      <ul>
+        <li>Dans l'onglet <strong>« Pointage »</strong>, affichez le mois concerné.</li>
+        <li>Faites <strong>Ctrl + P</strong> (Windows) ou <strong>⌘ + P</strong> (Mac) depuis votre navigateur.</li>
+        <li>Imprimez ou enregistrez en PDF la page qui s'affiche. C'est un document propre, lisible, avec tous les enfants et les montants du mois.</li>
+      </ul>
+      <p><strong>Pour un parent (s'il demande le détail) :</strong></p>
+      <ul>
+        <li>Cliquez sur l'icône 📷 (appareil photo) à côté du nom de l'enfant dans l'onglet Pointage.</li>
+        <li>L'application télécharge une image .jpg de la fiche de cet enfant pour ce mois.</li>
+        <li>Vous pouvez envoyer cette image par mail ou WhatsApp au parent.</li>
+      </ul>
+      <p><strong>Pour les preuves (photos des fiches papier) :</strong></p>
+      <ul>
+        <li>Pensez à photographier les fiches de présence papier remplies par les parents.</li>
+        <li>Rangez ces photos dans un dossier <strong>Preuves</strong> sur le Drive, à côté de l'application.</li>
+        <li>Si un parent conteste, vous aurez la preuve papier ET l'image générée par l'application.</li>
+      </ul>
+
+      <h3>🛡️ SÉCURITÉ ET TRANSMISSION (UNE FOIS)</h3>
+      <p>Le code de cette application est en accès libre. C'est une force : n'importe qui peut le lire ou le modifier (avec l'aide d'une IA, par exemple) pour l'adapter aux besoins futurs.</p>
+      <div class="doc-alerte"><strong>La règle d'or : Toujours garder une version stable</strong><br>Avant de faire la moindre modification du code :
+      <ul>
+        <li>Créez un sous-dossier sur le Drive nommé <code>/Version_Stable_[Date]</code>.</li>
+        <li>Copiez dedans les 3 fichiers (index.html, styles.css, app.js) + le dernier JSON.</li>
+        <li>Ne touchez plus à ce dossier. C'est votre filet de sécurité.</li>
+        <li>Si les modifications futures cassent quelque chose, il suffit de restaurer ce dossier stable.</li>
+      </ul></div>
+
+      <p class="doc-pied"><em>Documentation rédigée pour l'APEAMR. Cette application est un outil interne, elle ne se substitue pas à un logiciel de comptabilité officiel.</em></p>
     </div>
   </div>
 </div>

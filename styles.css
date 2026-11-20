@@ -582,3 +582,33 @@ body { background: #f4f7fc; display: flex; justify-content: center; padding: 1.5
     max-width: 95% !important;
   }
 }
+/* ============================================================
+   ONGLET ACCUEIL (menu de navigation)
+   ============================================================ */
+.accueil-titre { font-size: 1.3rem; font-weight: 600; color: #1a2e3f; display: flex; align-items: center; gap: .6rem; margin: 0 0 1.5rem; flex-wrap: wrap; }
+.accueil-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+.accueil-btn { background: #f4f9fe; border: 1px solid #e2e9f0; border-radius: 16px; padding: 1.1rem 1.2rem; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: .35rem; transition: all .18s ease; font-family: inherit; }
+.accueil-btn i { font-size: 1.3rem; color: #2c6e9c; margin-bottom: .3rem; }
+.accueil-btn-titre { font-weight: 600; font-size: .98rem; color: #1a2e3f; }
+.accueil-btn-desc { font-size: .8rem; color: #5f7484; line-height: 1.45; }
+.accueil-btn:hover { background: #eaf3fa; border-color: #bcd7e9; transform: translateY(-2px); box-shadow: 0 8px 18px rgba(44,110,156,.12); }
+.accueil-btn:active { transform: translateY(0); }
+.accueil-note { margin: 1.4rem 0 0; font-size: .85rem; color: #8aa0b0; text-align: center; }
+
+/* ============================================================
+   ONGLET PREMIERS PAS (documentation)
+   ============================================================ */
+.doc-content h2.doc-titre { font-size: 1.4rem; font-weight: 700; color: #1a2e3f; margin: 0 0 1.5rem; }
+.doc-sous-titre { display: block; font-size: .85rem; font-weight: 500; color: #8aa0b0; margin-top: .3rem; }
+.doc-content h3 { font-size: 1.02rem; font-weight: 700; color: #2c6e9c; margin: 2rem 0 .8rem; padding-bottom: .4rem; border-bottom: 2px solid #eaf3fa; }
+.doc-content p, .doc-content li { font-size: .9rem; color: #2d4a60; line-height: 1.65; }
+.doc-content ul, .doc-content ol { margin: .6rem 0 1rem; padding-left: 1.4rem; }
+.doc-content li { margin-bottom: .35rem; }
+.doc-content code { background: #f4f9fe; border: 1px solid #e2e9f0; border-radius: 8px; padding: .1rem .45rem; font-size: .82rem; color: #1b4a6b; }
+.doc-recap { background: #eef7f1; border: 1px solid #cfe7d8; border-radius: 16px; padding: 1.2rem 1.4rem; margin-bottom: 1rem; }
+.doc-recap h3 { color: #1f7a4a; border-bottom-color: #cfe7d8; margin-top: 0; }
+.doc-alerte { background: #fef6f6; border: 1px solid #f5c6c6; border-left: 4px solid #d9534f; border-radius: 12px; padding: .9rem 1.2rem; margin: 1rem 0; font-size: .88rem; color: #7a3b3b; line-height: 1.6; }
+.doc-alerte ul { margin-bottom: 0; }
+.doc-note { background: #fdf9ec; border: 1px solid #f0e2b6; border-left: 4px solid #d9b23f; border-radius: 12px; padding: .9rem 1.2rem; margin: 1rem 0; font-size: .88rem; color: #6b5a20; line-height: 1.6; }
+.doc-pied { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid #eaf3fa; color: #8aa0b0; }
+@media print { .doc-content h3 { color: #1a2e3f; } .doc-alerte, .doc-note { background: none; } }

@@ -1499,6 +1499,18 @@
 
 
     /* ============================================================
+     NAVIGATION DEPUIS L'ONGLET ACCUEIL
+     (chaque bouton renvoie vers l'onglet correspondant)
+     ============================================================ */
+  document.querySelectorAll('.accueil-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cible = document.querySelector('.tab-btn[data-tab="' + btn.dataset.aller + '"]'); 
+      if (cible) cible.click(); 
+      window.scrollTo({ top: 0, behavior: 'smooth' }); 
+    });
+  });
+
+  /* ============================================================
      GÉNÉRATION DE LA FICHE DE PRÉSENCE ET DU PDF (ONGLET 5)
      ============================================================ */
   const btnImprimerFiche = document.getElementById('btnTelechargerPdf');
