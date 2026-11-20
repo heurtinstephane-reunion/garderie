@@ -614,9 +614,9 @@
     const btnMod = document.getElementById('btnModifierSelection');
     const btnSup = document.getElementById('btnSupprimerSelection');
     const boutons = selection.size > 0;
-    if (hint) hint.style.display = boutons ? 'none' : '';
-    if (btnMod) btnMod.hidden = !boutons;
-    if (btnSup) btnSup.hidden = !boutons;
+    if (hint) hint.style.display = boutons ? 'none' : 'inline-flex';
+    if (btnMod) btnMod.style.display = boutons ? 'inline-flex' : 'none';
+    if (btnSup) btnSup.style.display = boutons ? 'inline-flex' : 'none';
   }
 
   function renderEnfants() {
