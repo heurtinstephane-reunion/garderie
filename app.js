@@ -745,6 +745,7 @@
         const validerBtn = ev.target.closest('[data-valider]'); 
         if (validerBtn) { 
           idsEnEdition.delete(validerBtn.dataset.valider); 
+          selection.delete(validerBtn.dataset.valider); 
           renderEnfants(); 
         } 
       });
