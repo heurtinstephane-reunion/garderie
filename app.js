@@ -276,7 +276,7 @@
       moisTraites.push(moisActif);
       // On affiche le message SEULEMENT si on vient de marquer le mois comme traité
       showConfirm(
-        "Le mois a bien été marqué comme traité.\n\nN'oubliez pas de faire une sauvegarde de vos données au format JSON dans l'onglet Sauvegardes.", 
+        "Le mois a bien été marqué comme traité.\n\nN'oubliez pas de faire une sauvegarde de vos données au format JSON dans l'onglet Données.", 
         { infoOnly: true, title: 'Mois clôturé', icon: 'check-circle' }
       );
     }
@@ -695,10 +695,12 @@
       if (selection.has(e.id)) tr.classList.add('selected'); 
       tr.dataset.rowId = e.id;
       tr.innerHTML = `<td class="check-col"><input type="checkbox" class="check-select row-check" data-id="${e.id}" ${selection.has(e.id) ? 'checked' : ''}></td>
-        <td><input type="text" class="input-field" value="${escapeHtml(e.nom)}" data-id="${e.id}" data-field="nom" style="text-align: center;"></td>
-        <td><input type="text" class="input-field" value="${escapeHtml(e.prenom)}" data-id="${e.id}" data-field="prenom" style="text-align: center;"></td>
-        ${sousTabActif === 'inscrit' ? `<td><select class="input-field" data-id="${e.id}" data-field="inscription" style="text-align: center;"><option value="matin" ${e.inscription === 'matin' ? 'selected' : ''}>Matin uniquement</option><option value="soir" ${e.inscription === 'soir' ? 'selected' : ''}>Soir uniquement</option><option value="matin_soir" ${e.inscription === 'matin_soir' ? 'selected' : ''}>Matin et soir</option></select></td>` : ''}
-        <td><button class="btn-icon danger" data-del="${e.id}" title="Supprimer"><i class="fas fa-trash-alt"></i></button></td>`;
+        <td class="col-nom"><span class="enfant-valeur">${escapeHtml(e.nom)}</span><input type="text" class="input-field" value="${escapeHtml(e.nom)}" data-id="${e.id}" data-field="nom" style="text-align: center;"></td>
+        <td class="col-prenom"><span class="enfant-valeur">${escapeHtml(e.prenom)}</span><input type="text" class="input-field" value="${escapeHtml(e.prenom)}" data-id="${e.id}" data-field="prenom" style="text-align: center;"></td>
+        <td class="label-col">Nom</td>
+        <td class="label-col">Prénom</td>
+        ${sousTabActif === 'inscrit' ? `<td class="col-statut"><select class="input-field" data-id="${e.id}" data-field="inscription" style="text-align: center;"><option value="matin" ${e.inscription === 'matin' ? 'selected' : ''}>Matin uniquement</option><option value="soir" ${e.inscription === 'soir' ? 'selected' : ''}>Soir uniquement</option><option value="matin_soir" ${e.inscription === 'matin_soir' ? 'selected' : ''}>Matin et soir</option></select></td>` : ''}
+        <td class="actions-col"><button class="btn-icon btn-edit" data-edit="${e.id}" title="Modifier le nom et le prénom"><i class="fas fa-edit"></i></button><button class="btn-icon danger" data-del="${e.id}" title="Supprimer"><i class="fas fa-trash-alt"></i></button></td>`;
       tb.appendChild(tr);
     });
 
@@ -715,10 +717,21 @@
           if (!enfant) return; 
           enfant[field] = el.value; 
           save(); 
+          if (field === 'nom' || field === 'prenom') { renderEnfants(); return; }
           if (field === 'inscription' && sousTabActif === 'inscrit') { renderEnfants(); renderTarification(); renderFacturation(); } 
         } 
       });
       wrap.addEventListener('click', async ev => { 
+        const editBtn = ev.target.closest('[data-edit]'); 
+        if (editBtn) { 
+          const tr = editBtn.closest('tr'); 
+          if (tr && !tr.classList.contains('editing')) { 
+            tr.classList.add('editing'); 
+            const inp = tr.querySelector('input[data-field="nom"]'); 
+            if (inp) { inp.focus(); if (inp.select) inp.select(); } 
+          } 
+          return; 
+        } 
         const delBtn = ev.target.closest('[data-del]'); 
         if (delBtn) { 
           const id = delBtn.dataset.del; 
@@ -1059,7 +1072,7 @@
       setTimeout(() => { 
         const input = document.querySelector(`input[data-id="${nouvel.id}"][data-field="nom"]`); 
         if (input) { 
-          input.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
+          if (input.scrollIntoView) input.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
           input.focus(); 
         } 
       }, 100);

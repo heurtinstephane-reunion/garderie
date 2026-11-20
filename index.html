@@ -23,7 +23,7 @@
     <button class="tab-btn" data-tab="enfants"><i class="fas fa-users"></i> Enfants</button>
     <button class="tab-btn" data-tab="tarification"><i class="fas fa-calculator"></i> Tarification</button>
     <button class="tab-btn" data-tab="impression"><i class="fas fa-print"></i> Impression</button>
-    <button class="tab-btn" data-tab="parametres"><i class="fas fa-shield-alt"></i> Sauvegardes</button>
+    <button class="tab-btn" data-tab="parametres"><i class="fas fa-database"></i> Données</button>
   </div>
 
   <!-- ================= ACCUEIL ================= -->
@@ -92,10 +92,6 @@
           <button class="btn btn-primary" id="btnAjouterEnfant" style="padding:.4rem .8rem; font-size:.82rem;"><i class="fas fa-plus"></i> Ajouter</button>
         </div>
         
-        <div style="display:flex; gap:.5rem; flex-wrap:wrap;">
-          <button class="btn btn-ghost" id="btnImportCSV"><i class="fas fa-file-import"></i> Importer un tableau (CSV)</button>
-          <button class="btn btn-ghost" id="btnExportCSV"><i class="fas fa-file-export"></i> Exporter la liste (CSV)</button>
-        </div>
       </div>
 
       <div class="barre-filtre">
@@ -218,14 +214,28 @@
     <div class="hint-pivot"><i class="fas fa-mobile-alt"></i> Astuce : tournez votre téléphone (verrouillage de rotation désactivé) pour un aperçu plus grand. Le PDF téléchargé est toujours de qualité A4, même en mode portrait.</div>
   </div>
 
-  <!-- ================= SAUVEGARDES ================= -->
+  <!-- ================= DONNEES ================= -->
   <div id="panneau-parametres" class="panneau">
     <div class="card">
-      <h2 style="font-size:1.3rem; font-weight:600; color:#1a2e3f; margin-bottom:1.5rem;"><i class="fas fa-shield-alt" style="color:#2c6e9c;"></i> Sauvegardes</h2> 
-      <div style="display:flex; gap:.6rem; flex-wrap:wrap;">
-        <button class="btn btn-primary" id="btnExportJSON"><i class="fas fa-file-export"></i> Exporter la sauvegarde (JSON)</button>
-        <button class="btn btn-light" id="btnImportJSON"><i class="fas fa-file-import"></i> Importer une sauvegarde (JSON)</button>
-        <input type="file" id="inputJSON" accept=".json,application/json" style="display:none;">
+      <h2 style="font-size:1.3rem; font-weight:600; color:#1a2e3f; margin-bottom:1.5rem;"><i class="fas fa-database" style="color:#2c6e9c;"></i> Données</h2>
+
+      <div class="donnees-section">
+        <h3 class="donnees-titre"><i class="fas fa-users"></i> Gestion de la liste des élèves</h3>
+        <p class="donnees-hint">À utiliser une fois par an avec la liste fournie par l'école, ou pour récupérer la liste sur un autre ordinateur.</p>
+        <div class="donnees-boutons">
+          <button class="btn btn-ghost" id="btnImportCSV"><i class="fas fa-file-import"></i> Importer la liste au format CSV</button>
+          <button class="btn btn-ghost" id="btnExportCSV"><i class="fas fa-file-export"></i> Exporter la liste au format CSV</button>
+        </div>
+      </div>
+
+      <div class="donnees-section">
+        <h3 class="donnees-titre"><i class="fas fa-shield-alt"></i> Sauvegardes de l'application</h3>
+        <p class="donnees-hint">Une fois par mois : exportez le JSON et déposez-le sur le Drive de l'association.</p>
+        <div class="donnees-boutons">
+          <button class="btn btn-primary" id="btnExportJSON"><i class="fas fa-file-export"></i> Exporter la sauvegarde (JSON)</button>
+          <button class="btn btn-light" id="btnImportJSON"><i class="fas fa-file-import"></i> Importer une sauvegarde (JSON)</button>
+          <input type="file" id="inputJSON" accept=".json,application/json" style="display:none;">
+        </div>
       </div>
     </div>
   </div>
@@ -289,10 +299,10 @@
           </ul>
         </li>
         <li>Enregistrez ce fichier au format <strong>CSV (séparé par des points-virgules)</strong>.</li>
-        <li>Dans l'application, allez dans l'onglet <strong>« Enfants »</strong> et cliquez sur <strong>« Importer un tableau (CSV) »</strong>. Sélectionnez votre fichier.</li>
+        <li>Dans l'application, allez dans l'onglet <strong>« Données »</strong>, section <strong>« Gestion de la liste des élèves »</strong>, et cliquez sur <strong>« Importer la liste au format CSV »</strong>. Sélectionnez votre fichier.</li>
         <li>Vérifiez l'aperçu, puis validez. Votre liste est créée.</li>
       </ol>
-      <p><em>Si vous reprenez l'outil d'une personne qui vous l'a transmis, vous n'avez pas besoin de cette étape. Il vous suffit d'aller dans « Sauvegardes » et d'importer le fichier JSON qu'elle vous a laissé.</em></p>
+      <p><em>Si vous reprenez l'outil d'une personne qui vous l'a transmis, vous n'avez pas besoin de cette étape. Il vous suffit d'aller dans « Données » et d'importer le fichier JSON qu'elle vous a laissé.</em></p>
 
       <h3>👶 ÉTAPE 3 : Mettre à jour la liste (RÉPÉTITIF)</h3>
       <p>L'école vous fournit une liste en début d'année, mais elle n'est plus mise à jour par la suite. Vous serez avertis par mail des arrivées et des départs. C'est donc à vous de mettre à jour l'application.</p>
@@ -347,7 +357,7 @@
       <p>Les données sont stockées dans votre navigateur. Si vous videz votre cache ou changez d'ordinateur, <strong>vous perdez tout</strong>.</p>
       <p><strong>Une fois par mois, vous devez faire une sauvegarde vers le Drive.</strong></p>
       <ol>
-        <li>Dans l'application, allez dans l'onglet <strong>« Sauvegardes »</strong>.</li>
+        <li>Dans l'application, allez dans l'onglet <strong>« Données »</strong>.</li>
         <li>Cliquez sur <strong>« Exporter la sauvegarde (JSON) »</strong>.</li>
         <li>Un fichier <code>sauvegarde-garderie-AAAA-MM-JJ-HHhMM.json</code> se télécharge.</li>
         <li>Déplacez ce fichier sur le <strong>Google Drive de l'association</strong> (dans le dossier prévu à cet effet).</li>

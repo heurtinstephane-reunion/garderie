@@ -793,3 +793,174 @@ body { background: #f4f7fc; display: flex; justify-content: center; padding: 1.5
     margin: 0;
   }
 }
+
+/* ============================================================
+   RAFFINEMENTS 3
+   - Onglet "Données" (sections CSV / JSON)
+   - Enfants : nom et prénom en lecture seule + bouton ✏️
+   - Pointage : montant et corbeille alignés sous l'en-tête enfant
+   - Stats inscrites : bandeau horizontal en portrait
+   ============================================================ */
+
+/* ---------- SECTIONS DE L'ONGLET DONNÉES ---------- */
+.donnees-section {
+  border: 1px solid #e2e9f0;
+  border-radius: 14px;
+  background: #fafdff;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.2rem;
+}
+.donnees-section:last-child { margin-bottom: 0; }
+.donnees-titre {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  margin: 0 0 .4rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a2e3f;
+}
+.donnees-titre i { color: #2c6e9c; font-size: .95rem; }
+.donnees-hint { margin: 0 0 .8rem 0; font-size: .82rem; color: #6f8698; }
+.donnees-boutons { display: flex; gap: .6rem; flex-wrap: wrap; }
+
+/* ---------- ENFANTS : NOM / PRÉNOM EN LECTURE SEULE ---------- */
+.enfant-table .enfant-valeur {
+  display: inline-block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: .4rem .3rem;
+  color: #1a2e3f;
+  font-size: .92rem;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.enfant-table .col-nom .input-field,
+.enfant-table .col-prenom .input-field { display: none; }
+.enfant-table tr.editing .enfant-valeur { display: none; }
+.enfant-table tr.editing .col-nom .input-field,
+.enfant-table tr.editing .col-prenom .input-field {
+  display: block;
+  width: 100%;
+}
+.enfant-table td.label-col { display: none; }
+.enfant-table td.actions-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .3rem;
+}
+.enfant-table .btn-edit { color: #2c6e9c; font-size: 1rem; }
+
+/* ---------- SMARTPHONE (portrait) ---------- */
+@media (max-width: 640px) {
+
+  /* STATS : bandeau horizontal (une ligne qui passe à la ligne si besoin) */
+  .stats-bandeau {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .4rem 1.1rem;
+  }
+  .stats-bandeau .stat-sep { display: none; }
+
+  /* ENFANTS : carte à 5 colonnes
+     Ligne 1 : [coche] [Nom] [Prénom] [✏️]
+     Ligne 2 : [Nom] [Prénom] [Statut] [corbeille] */
+  .enfant-table tr {
+    grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.25fr) auto;
+  }
+  .enfant-table td:first-child {
+    float: none;
+    width: auto;
+    margin: 0;
+    display: flex;
+  }
+  .enfant-table .col-nom { grid-row: 1; grid-column: 2; padding: .1rem 0; }
+  .enfant-table .col-prenom { grid-row: 1; grid-column: 3; padding: .1rem 0; }
+  .enfant-table td.label-col {
+    display: block;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    font-size: .62rem;
+    font-weight: 500;
+    color: #8aa0b0;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    text-align: center;
+  }
+  .enfant-table td.label-col:nth-child(4) { grid-row: 2; grid-column: 2; }
+  .enfant-table td.label-col:nth-child(5) { grid-row: 2; grid-column: 3; }
+  .enfant-table .col-statut {
+    grid-row: 2;
+    grid-column: 4;
+    width: auto;
+    margin: 0;
+  }
+  .enfant-table .col-statut .input-field {
+    width: 100%;
+    font-size: .7rem;
+    padding: .3rem .15rem;
+  }
+  .enfant-table td.actions-col { display: contents; }
+  .enfant-table td.actions-col .btn-edit {
+    grid-row: 1;
+    grid-column: 5;
+    justify-self: center;
+    font-size: .95rem;
+  }
+  .enfant-table td.actions-col .btn-icon.danger {
+    position: static;
+    grid-row: 2;
+    grid-column: 5;
+    justify-self: center;
+    margin: 0;
+  }
+
+  /* POINTAGE : mêmes repères verticaux entre l'en-tête enfant et les lignes
+     Colonne 5 = montant, colonne 6 = icône (photo / corbeille) */
+  .enfant-group-header { padding: .7rem .6rem; }
+  .enfant-lignes { padding: .4rem .6rem .9rem .6rem; }
+  .enfant-montant {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: .45rem;
+    align-items: center;
+    width: 100%;
+  }
+  .enfant-montant-label { grid-column: 1 / 5; }
+  .enfant-group-header .enfant-total {
+    grid-column: 5;
+    justify-self: end;
+    padding: .3rem .5rem;
+    font-size: .85rem;
+    white-space: nowrap;
+  }
+  .enfant-group-header .btn-capture {
+    grid-column: 6;
+    justify-self: center;
+    margin: 0;
+  }
+  .ligne-date .tarif-affiche {
+    grid-column: 5;
+    grid-row: 2;
+    justify-self: end;
+    display: block;
+    border-left: none;
+    padding: 0;
+    margin: 0;
+    font-size: .85rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .ligne-date .btn-icon.danger {
+    position: static;
+    grid-column: 6;
+    grid-row: 2;
+    justify-self: center;
+    margin: 0;
+  }
+}
