@@ -613,9 +613,10 @@
     const hint = document.getElementById('hintSelection');
     const btnMod = document.getElementById('btnModifierSelection');
     const btnSup = document.getElementById('btnSupprimerSelection');
-    if (hint) hint.style.display = selection.size === 0 ? '' : 'none';
-    if (btnMod) btnMod.hidden = selection.size === 0;
-    if (btnSup) btnSup.hidden = selection.size === 0;
+    const boutons = selection.size > 0;
+    if (hint) hint.style.display = boutons ? 'none' : '';
+    if (btnMod) btnMod.style.display = boutons ? '' : 'none';
+    if (btnSup) btnSup.style.display = boutons ? '' : 'none';
   }
 
   function renderEnfants() {
@@ -706,7 +707,11 @@
       tr.innerHTML = `<td class="check-col"><input type="checkbox" class="check-select row-check" data-id="${e.id}" ${selection.has(e.id) ? 'checked' : ''}></td>
         <td class="col-nom">${enEdition ? `<input type="text" class="input-field" value="${escapeHtml(e.nom)}" data-id="${e.id}" data-field="nom" style="text-align: center;">` : `<span class="enfant-valeur">${escapeHtml(e.nom)}</span>`}</td>
         <td class="col-prenom">${enEdition ? `<input type="text" class="input-field" value="${escapeHtml(e.prenom)}" data-id="${e.id}" data-field="prenom" style="text-align: center;">` : `<span class="enfant-valeur">${escapeHtml(e.prenom)}</span>`}</td>
-        ${sousTabActif === 'inscrit' ? `<td class="col-statut"><select class="input-field" data-id="${e.id}" data-field="inscription" style="text-align: center;"><option value="matin" ${e.inscription === 'matin' ? 'selected' : ''}>Matin uniquement</option><option value="soir" ${e.inscription === 'soir' ? 'selected' : ''}>Soir uniquement</option><option value="matin_soir" ${e.inscription === 'matin_soir' ? 'selected' : ''}>Matin et soir</option></select></td>` : ''}
+        ${sousTabActif === 'inscrit' ? `<td class="col-statut">${enEdition 
+          ? `<select class="input-field" data-id="${e.id}" data-field="inscription" style="text-align: center;"><option value="matin" ${e.inscription === 'matin' ? 'selected' : ''}>Matin uniquement</option><option value="soir" ${e.inscription === 'soir' ? 'selected' : ''}>Soir uniquement</option><option value="matin_soir" ${e.inscription === 'matin_soir' ? 'selected' : ''}>Matin et soir</option><option value="non_inscrit">— Basculer en non inscrit —</option></select>` 
+          : `<span class="enfant-valeur">${{ matin: 'Matin uniquement', soir: 'Soir uniquement', matin_soir: 'Matin et soir' }[e.inscription] || '—'}</span>` 
+        }</td>` 
+        : (enEdition ? `<td class="col-statut"><select class="input-field" data-id="${e.id}" data-field="inscription" style="text-align: center;"><option value="inscrit">— Basculer en inscrit —</option></select></td>` : '')}
         ${enEdition ? `<td class="col-valider"><button class="btn-icon btn-valider" data-valider="${e.id}" title="Valider et revenir en lecture seule"><i class="fas fa-check-circle"></i></button></td>` : ''}`;
       tb.appendChild(tr);
     });
@@ -725,7 +730,15 @@
           enfant[field] = el.value; 
           save(); 
           if (field === 'nom' || field === 'prenom') { renderEnfants(); return; }
-          if (field === 'inscription' && sousTabActif === 'inscrit') { renderEnfants(); renderTarification(); renderFacturation(); } 
+          if (field === 'inscription') { 
+            if (el.value === 'non_inscrit' || el.value === 'inscrit') { 
+              enfant.statut = el.value; 
+              if (el.value === 'inscrit') { if (!enfant.inscription) enfant.inscription = 'matin_soir'; } 
+              else enfant.inscription = ''; 
+              idsEnEdition.delete(id); selection.delete(id); 
+            } 
+            save(); renderEnfants(); renderTarification(); renderFacturation(); 
+          } 
         } 
       });
       wrap.addEventListener('click', async ev => { 

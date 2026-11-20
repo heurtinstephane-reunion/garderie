@@ -840,6 +840,9 @@ body { background: #f4f7fc; display: flex; justify-content: center; padding: 1.5
 .enfant-table .btn-valider { color: #1e7d45; font-size: 1.1rem; }
 .enfant-table .btn-valider:hover { color: #155c33; }
 
+/* Un bouton masqué doit rester masqué, même avec display:inline-flex */
+.btn[hidden] { display: none !important; }
+
 /* Texte d'aide quand rien n'est sélectionné */
 .hint-selection {
   font-size: .8rem;
