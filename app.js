@@ -335,10 +335,10 @@
           ${badgeInscr}
         </div>
         
-         <div style="display:flex; align-items:center; gap:.8rem;">
-          <span style="font-size:.85rem; color:#6f8698;">Montant à régler :</span>
+        <div class="enfant-montant">
+          <span class="enfant-montant-label">Montant à régler :</span>
           <span class="enfant-total">${euro(total)}</span>
-          <button class="btn-icon btn-capture" data-id="${enfantId}" title="Télécharger la capture d'écran" style="color: #2c6e9c; font-size: 1.1rem; margin-left: .5rem;"><i class="fas fa-camera"></i></button>
+          <button class="btn-icon btn-capture" data-id="${enfantId}" title="Télécharger la capture d'écran"><i class="fas fa-camera"></i></button>
         </div>
       `;
       group.appendChild(header);
@@ -1487,6 +1487,7 @@
       const tab = btn.dataset.tab;
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); 
       btn.classList.add('active');
+      if (btn.scrollIntoView) btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       document.querySelectorAll('.panneau').forEach(p => p.classList.remove('active'));
       const panneau = document.getElementById('panneau-' + tab); 
       if (panneau) panneau.classList.add('active');

@@ -17,9 +17,9 @@
   </header>
 
   <div class="tabs">
-    <button class="tab-btn" data-tab="accueil"><i class="fas fa-home"></i> Accueil</button>
+    <button class="tab-btn active" data-tab="accueil"><i class="fas fa-home"></i> Accueil</button>
     <button class="tab-btn" data-tab="premiers_pas"><i class="fas fa-book-open"></i> Premiers pas</button>
-    <button class="tab-btn active" data-tab="facturation"><i class="fas fa-euro-sign"></i> Pointage</button>
+    <button class="tab-btn" data-tab="facturation"><i class="fas fa-euro-sign"></i> Pointage</button>
     <button class="tab-btn" data-tab="enfants"><i class="fas fa-users"></i> Enfants</button>
     <button class="tab-btn" data-tab="tarification"><i class="fas fa-calculator"></i> Tarification</button>
     <button class="tab-btn" data-tab="impression"><i class="fas fa-print"></i> Impression</button>
@@ -27,33 +27,33 @@
   </div>
 
   <!-- ================= ACCUEIL ================= -->
-  <div id="panneau-accueil" class="panneau">
+  <div id="panneau-accueil" class="panneau active">
     <div class="card">
       <h2 class="accueil-titre"><i class="fas fa-hand-holding-heart" style="color:#2c6e9c;"></i> Que souhaitez-vous faire aujourd'hui ?</h2>
       <div class="accueil-grid">
         <button class="accueil-btn" data-aller="facturation">
-          <i class="fas fa-euro-sign"></i>
-          <span class="accueil-btn-titre">Faire le pointage ?</span>
+          <span class="accueil-tete"><i class="fas fa-euro-sign"></i>
+          <span class="accueil-btn-titre">Faire le pointage ?</span></span>
           <span class="accueil-btn-desc">Relever les garderies occasionnelles et les retards du mois</span>
         </button>
         <button class="accueil-btn" data-aller="enfants">
-          <i class="fas fa-users"></i>
-          <span class="accueil-btn-titre">Modifier la liste des enfants</span>
+          <span class="accueil-tete"><i class="fas fa-users"></i>
+          <span class="accueil-btn-titre">Modifier la liste des enfants</span></span>
           <span class="accueil-btn-desc">Ajouter, supprimer ou changer le créneau d'un enfant</span>
         </button>
         <button class="accueil-btn" data-aller="tarification">
-          <i class="fas fa-calculator"></i>
-          <span class="accueil-btn-titre">Modifier des éléments de la tarification ?</span>
+          <span class="accueil-tete"><i class="fas fa-calculator"></i>
+          <span class="accueil-btn-titre">Modifier des éléments de la tarification ?</span></span>
           <span class="accueil-btn-desc">Prix du quart d'heure, garderie occasionnelle, tarifs inscrits</span>
         </button>
         <button class="accueil-btn" data-aller="impression">
-          <i class="fas fa-print"></i>
-          <span class="accueil-btn-titre">Imprimer des fiches de présences ?</span>
+          <span class="accueil-tete"><i class="fas fa-print"></i>
+          <span class="accueil-btn-titre">Imprimer des fiches de présences ?</span></span>
           <span class="accueil-btn-desc">Aperçu et téléchargement de la fiche en A4 paysage</span>
         </button>
         <button class="accueil-btn" data-aller="parametres">
-          <i class="fas fa-shield-alt"></i>
-          <span class="accueil-btn-titre">Sauvegarder</span>
+          <span class="accueil-tete"><i class="fas fa-shield-alt"></i>
+          <span class="accueil-btn-titre">Sauvegarder</span></span>
           <span class="accueil-btn-desc">Exporter la sauvegarde JSON vers le Drive</span>
         </button>
       </div>
@@ -62,7 +62,7 @@
   </div>
 
   <!-- ================= POINTAGE ================= -->
-  <div id="panneau-facturation" class="panneau active">
+  <div id="panneau-facturation" class="panneau">
     <div class="card">
       <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
       <div class="mois-grid" id="moisGrid" style="margin-bottom: 0;"></div>
@@ -132,7 +132,7 @@
 
 </div>
 
-      <div style="display: flex; justify-content: space-between; align-items: center; background: #f4f9fe; padding: 0.5rem 1rem; border-radius: 12px; margin-bottom: 1rem; border: 1px solid #e2e9f0; flex-wrap: wrap; gap: 0.5rem;">
+      <div class="barre-selection" style="display: flex; justify-content: space-between; align-items: center; background: #f4f9fe; padding: 0.5rem 1rem; border-radius: 12px; margin-bottom: 1rem; border: 1px solid #e2e9f0; flex-wrap: wrap; gap: 0.5rem;">
   <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; color: #1b4a6b; font-weight: 500;">
     <input type="checkbox" id="checkAllVisible" class="check-select" style="cursor: pointer; width: 1.1rem; height: 1.1rem; accent-color: #2c6e9c;">
     <label for="checkAllVisible" id="labelCheckAll" style="cursor: pointer; margin: 0;">Tout sélectionner</label>
